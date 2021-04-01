@@ -1,22 +1,33 @@
-let stub = 0;
-const getID = (prefix)=>{
-    const uniqueID = `${prefix}_${stub.toString(16)}`;
-    stub += 1;
-    return uniqueID;
+const getStylesheetElement = ()=>{
+    const stylesheetElement = document.createElement("style");
+    document.head.appendChild(stylesheetElement);
+    return stylesheetElement;
 };
-const styleSheetElement = document.createElement("style");
-document.head.appendChild(styleSheetElement);
-let stylesheet;
-if (styleSheetElement.sheet !== null) {
-    stylesheet = styleSheetElement.sheet;
-}
-const appendStyleToStylesheet = (style)=>{
-    if (stylesheet !== undefined) {
-        stylesheet.insertRule(style, stylesheet.cssRules.length);
+const getStylesheet = (element)=>{
+    return element?.sheet ?? undefined;
+};
+const getSheetIndex = (stylesheetElement)=>{
+    let stylesheetIndex = -1;
+    if (stylesheetElement === undefined) {
+        return stylesheetIndex;
     }
+    const children = document.head.children;
+    while(stylesheetIndex < children.length){
+        stylesheetIndex += 1;
+        if (children[stylesheetIndex] === stylesheetElement) {
+            break;
+        }
+    }
+    return stylesheetIndex;
 };
-const fragment1 = (templateArray, ...injections)=>{
-    return getTemplateAsStr(templateArray, injections);
+const stylesheetElement = getStylesheetElement();
+const stylesheet = getStylesheet(stylesheetElement);
+const stylesheetIndex = getSheetIndex(stylesheetElement);
+let stub = -1;
+const getID = (prefix)=>{
+    stub += 1;
+    const uniqueID = `cake_${prefix}_${stub.toString(16)}`;
+    return uniqueID;
 };
 const getTemplateAsStr = (templateArray, injections)=>{
     const requestedStyle = [];
@@ -33,62 +44,138 @@ const getTemplateAsStr = (templateArray, injections)=>{
     requestedStyle.push(templatePiece);
     return requestedStyle.join("");
 };
-const style = ({ prefix , templateArray , injections ,  })=>{
-    const id = getID(prefix);
+const appendStyleToStylesheet = (style)=>{
+    if (stylesheet !== undefined) {
+        stylesheet.insertRule(style, stylesheet.cssRules.length);
+    }
+};
+const style1 = (templateArray, ...injections)=>{
+    const id = getID(stylesheetIndex);
     const template = getTemplateAsStr(templateArray, injections);
     const constructedStyle = `.${id} {${template}}`;
     appendStyleToStylesheet(constructedStyle);
     return id;
 };
-const keyframe = ({ prefix , templateArray , injections ,  })=>{
-    const id = getID(prefix);
+const keyframe1 = (templateArray, ...injections)=>{
+    const id = getID(stylesheetIndex);
     const template = getTemplateAsStr(templateArray, injections);
     const constructedStyle = `@keyframes ${id} {${template}}`;
     appendStyleToStylesheet(constructedStyle);
     return id;
 };
-const mediaQuery = ({ prefix , query , fragment: fragment1 ,  })=>{
-    const id = getID(prefix);
-    const constructedStyle = `@media ${query} {\n    .${id} {${fragment1}}\n  }`;
+const selector1 = ({ selector: selector1 , templateArray , injections  })=>{
+    const id = getID(stylesheetIndex);
+    const template = getTemplateAsStr(templateArray, injections);
+    const constructedStyle = `.${id}:${selector1} {${template}}`;
     appendStyleToStylesheet(constructedStyle);
     return id;
 };
-const selector = ({ prefix , cssSelector , fragment: fragment1 ,  })=>{
-    const id = getID(prefix);
-    const constructedStyle = `.${getID(id)}:${cssSelector} {${fragment1}}`;
+const mediaQuery1 = ({ mediaQuery: mediaQuery1 , selector: selector1 , templateArray , injections ,  })=>{
+    const id = getID(stylesheetIndex);
+    const template = getTemplateAsStr(templateArray, injections);
+    let constructedStyle = `@media ${mediaQuery1} {\n    .${id} {${template}}\n  }`;
+    if (selector1 !== undefined) {
+        constructedStyle = `@media ${mediaQuery1} {\n      .${id}:${selector1} {${template}}\n    }`;
+    }
     appendStyleToStylesheet(constructedStyle);
     return id;
 };
-const createInterface1 = (prefix)=>{
-    return {
-        style: (templateArray, ...injections)=>{
-            return style({
-                injections,
-                prefix,
-                templateArray
-            });
-        },
-        keyframe: (templateArray, ...injections)=>{
-            return keyframe({
-                injections,
-                prefix,
-                templateArray
-            });
-        },
-        mediaQuery: (query, fragment1)=>{
-            return mediaQuery({
-                fragment: fragment1,
-                prefix,
-                query
-            });
-        },
-        selector: (cssSelector, fragment1)=>{
-            return selector({
-                cssSelector,
-                fragment: fragment1,
-                prefix
-            });
-        }
-    };
+const focus1 = (templateArray, ...injections)=>{
+    return selector1({
+        selector: "focus",
+        templateArray,
+        injections
+    });
 };
-export { createInterface1 as createInterface, fragment1 as fragment };
+const hover1 = (templateArray, ...injections)=>{
+    return selector1({
+        selector: "hover",
+        templateArray,
+        injections
+    });
+};
+const checked1 = (templateArray, ...injections)=>{
+    return selector1({
+        selector: "checked",
+        templateArray,
+        injections
+    });
+};
+const valid1 = (templateArray, ...injections)=>{
+    return selector1({
+        selector: "valid",
+        templateArray,
+        injections
+    });
+};
+const invalid1 = (templateArray, ...injections)=>{
+    return selector1({
+        selector: "invalid",
+        templateArray,
+        injections
+    });
+};
+const required1 = (templateArray, ...injections)=>{
+    return selector1({
+        selector: "required",
+        templateArray,
+        injections
+    });
+};
+const disabled1 = (templateArray, ...injections)=>{
+    return selector1({
+        selector: "disabled",
+        templateArray,
+        injections
+    });
+};
+const firstChild1 = (templateArray, ...injections)=>{
+    return selector1({
+        selector: "first-child",
+        templateArray,
+        injections
+    });
+};
+const lastChild1 = (templateArray, ...injections)=>{
+    return selector1({
+        selector: "last-child",
+        templateArray,
+        injections
+    });
+};
+const screen6411 = (templateArray, ...injections)=>{
+    return mediaQuery1({
+        mediaQuery: "screen and (min-width: 641px)",
+        templateArray,
+        injections
+    });
+};
+const screen10081 = (templateArray, ...injections)=>{
+    return mediaQuery1({
+        mediaQuery: "screen and (min-width: 1008px)",
+        templateArray,
+        injections
+    });
+};
+const landscape1 = (templateArray, ...injections)=>{
+    return mediaQuery1({
+        mediaQuery: "screen and (orientation: landscape)",
+        templateArray,
+        injections
+    });
+};
+const portrait1 = (templateArray, ...injections)=>{
+    return mediaQuery1({
+        mediaQuery: "screen and (orientation: portrait)",
+        templateArray,
+        injections
+    });
+};
+const print1 = (templateArray, ...injections)=>{
+    return mediaQuery1({
+        mediaQuery: "print",
+        templateArray,
+        injections
+    });
+};
+export { keyframe1 as keyframe, mediaQuery1 as mediaQuery, selector1 as selector, style1 as style, checked1 as checked, disabled1 as disabled, focus1 as focus, firstChild1 as firstChild, hover1 as hover, invalid1 as invalid, landscape1 as landscape, lastChild1 as lastChild, portrait1 as portrait, print1 as print, required1 as required, screen10081 as screen1008, screen6411 as screen641, valid1 as valid };

@@ -3,45 +3,35 @@
 
 import { InjectionValue } from "./style_fixture.ts";
 
-type GetTemplateAsString = (
+type GetTemplate = (
   templateArray: TemplateStringsArray,
   injections: InjectionValue[]
 ) => string;
 
-interface StyleTemplateParams {
-  templateArray: TemplateStringsArray;
-  injections: InjectionValue[];
-  prefix: string;
+interface GetSelectorParams {
+  selector: string,
+  templateArray: TemplateStringsArray,
+  injections: InjectionValue[]
 }
-type AppendStyleTemplate = (params: StyleTemplateParams) => string;
+type GetSelector = (
+  params: GetSelectorParams,
+) => string;
 
-interface SelectorTemplateParams {
-  fragment: string;
-  cssSelector: string;
-  prefix: string;
+interface GetMediaQueryParams {
+  mediaQuery: string,
+  selector?: string,
+  templateArray: TemplateStringsArray,
+  injections: InjectionValue[]
 }
-type AppendSelectorTemplate = (params: SelectorTemplateParams) => string;
+type GetMediaQuery = (
+  params: GetMediaQueryParams
+) => string;
 
-interface MediaQueryTemplateParams {
-  fragment: string;
-  query: string;
-  prefix: string;
-}
-type AppendMediaQueryTemplate = (params: MediaQueryTemplateParams) => string;
-
-type StyleRecord = Record<string, string>;
-type GetUniqueID = (prefix: string) => string;
 type AppendStyleToStylesheet = (style: string) => void;
 
 export type {
-  AppendMediaQueryTemplate,
-  AppendSelectorTemplate,
-  AppendStyleTemplate,
   AppendStyleToStylesheet,
-  GetTemplateAsString,
-  GetUniqueID,
-  MediaQueryTemplateParams,
-  SelectorTemplateParams,
-  StyleRecord,
-  StyleTemplateParams,
+  GetTemplate,
+  GetSelector,
+  GetMediaQuery,
 };

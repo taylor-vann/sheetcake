@@ -1,7 +1,7 @@
-let stub = 0;
+let stub = -1;
 const getID = (prefix)=>{
-    const uniqueID = `${prefix}_${stub.toString(16)}`;
     stub += 1;
+    const uniqueID = `cake_${prefix}_${stub.toString(16)}`;
     return uniqueID;
 };
 const title = "sheetcake:receipt";

@@ -3,37 +3,17 @@
 
 import type { StyleTemplate } from "../type_flyweight/style_fixture.ts";
 import type {
-  AppendMediaQueryTemplate,
-  AppendSelectorTemplate,
-  AppendStyleTemplate,
-  GetTemplateAsString,
+  GetTemplate,
+  GetSelector,
+  GetMediaQuery,
 } from "../type_flyweight/template_functions.ts";
+import { stylesheet, stylesheetIndex } from "../sheet/sheet.ts";
 
 import { getID } from "../receipt/receipt.ts";
 
-type AppendStyleToStylesheet = (
-  style: string
-) => void;
+type AppendStyleToStylesheet = (style: string) => void;
 
-const styleSheetElement = document.createElement("style");
-document.head.appendChild(styleSheetElement);
-
-let stylesheet: CSSStyleSheet | undefined;
-if (styleSheetElement.sheet !== null) {
-  stylesheet = styleSheetElement.sheet;
-}
-
-const appendStyleToStylesheet: AppendStyleToStylesheet = (style) => {
-  if (stylesheet !== undefined) {
-    stylesheet.insertRule(style, stylesheet.cssRules.length);
-  }
-};
-
-const fragment: StyleTemplate = (templateArray, ...injections) => {
-  return getTemplateAsStr(templateArray, injections);
-};
-
-const getTemplateAsStr: GetTemplateAsString = (templateArray, injections) => {
+const getTemplateAsStr: GetTemplate = (templateArray, injections) => {
   const requestedStyle = [];
 
   const templateLength = templateArray.length;
@@ -54,12 +34,14 @@ const getTemplateAsStr: GetTemplateAsString = (templateArray, injections) => {
   return requestedStyle.join("");
 };
 
-const style: AppendStyleTemplate = ({
-  prefix,
-  templateArray,
-  injections,
-}) => {
-  const id = getID(prefix);
+const appendStyleToStylesheet: AppendStyleToStylesheet = (style) => {
+  if (stylesheet !== undefined) {
+    stylesheet.insertRule(style, stylesheet.cssRules.length);
+  }
+};
+
+const style: StyleTemplate = (templateArray, ...injections) => {
+  const id = getID(stylesheetIndex);
   const template = getTemplateAsStr(templateArray, injections);
   const constructedStyle = `.${id} {${template}}`;
 
@@ -68,12 +50,8 @@ const style: AppendStyleTemplate = ({
   return id;
 };
 
-const keyframe: AppendStyleTemplate = ({
-  prefix,
-  templateArray,
-  injections,
-}) => {
-  const id = getID(prefix);
+const keyframe: StyleTemplate = (templateArray, ...injections) => {
+  const id = getID(stylesheetIndex);
   const template = getTemplateAsStr(templateArray, injections);
   const constructedStyle = `@keyframes ${id} {${template}}`;
 
@@ -82,32 +60,43 @@ const keyframe: AppendStyleTemplate = ({
   return id;
 };
 
-const mediaQuery: AppendMediaQueryTemplate = ({
-  prefix,
-  query,
-  fragment,
+const selector: GetSelector = ({ selector, templateArray, injections }) => {
+  const id = getID(stylesheetIndex);
+  const template = getTemplateAsStr(templateArray, injections);
+  const constructedStyle = `.${id}:${selector} {${template}}`;
+
+  appendStyleToStylesheet(constructedStyle);
+
+  return id;
+};
+
+const mediaQuery: GetMediaQuery = ({
+  mediaQuery,
+  selector,
+  templateArray,
+  injections,
 }) => {
-  const id = getID(prefix);
-  const constructedStyle = `@media ${query} {
-    .${id} {${fragment}}
+  const id = getID(stylesheetIndex);
+  const template = getTemplateAsStr(templateArray, injections);
+
+  let constructedStyle = `@media ${mediaQuery} {
+    .${id} {${template}}
   }`;
 
-  appendStyleToStylesheet(constructedStyle);
-
-  return id;
-};
-
-const selector: AppendSelectorTemplate = ({
-  prefix,
-  cssSelector,
-  fragment,
-}) => {
-  const id = getID(prefix);
-  const constructedStyle = `.${getID(id)}:${cssSelector} {${fragment}}`;
+  if (selector !== undefined) {
+    constructedStyle = `@media ${mediaQuery} {
+      .${id}:${selector} {${template}}
+    }`;
+  }
 
   appendStyleToStylesheet(constructedStyle);
 
   return id;
 };
 
-export { fragment, style, keyframe, mediaQuery, selector };
+export {
+  keyframe,
+  mediaQuery,
+  selector,
+  style,
+};

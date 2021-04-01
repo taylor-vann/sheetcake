@@ -1,11 +1,47 @@
 // brian taylor vann
 // sheetcake
 
-import type {StyleFixtureInterface} from "./type_flyweight/style_fixture.ts";
+import {
+  keyframe,
+  mediaQuery,
+  selector,
+  style,
+} from "./template_functions/template_functions.ts";
 
-import {createInterface} from "./style_fixture/style_fixture.ts";
-import {fragment} from "./template_functions/template_functions.ts"
+import {
+  checked,
+  disabled,
+  focus,
+  firstChild,
+  hover,
+  invalid,
+  landscape,
+  lastChild,
+  portrait,
+  print,
+  required,
+  screen1008,
+  screen641,
+  valid,
+} from "./compound_templates/compound_templates.ts";
 
-export type {StyleFixtureInterface as SheetCakeInterface}
-
-export {createInterface, fragment }
+export {
+  keyframe,
+  mediaQuery,
+  selector,
+  style,
+  checked,
+  disabled,
+  focus,
+  firstChild,
+  hover,
+  invalid,
+  landscape,
+  lastChild,
+  portrait,
+  print,
+  required,
+  screen1008,
+  screen641,
+  valid,
+};
