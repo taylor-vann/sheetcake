@@ -8,13 +8,14 @@ type StyleTemplate = (
   ...injections: InjectionValue[]
 ) => string;
 
-
+type CreateSelectorTemplate = (selector: string) => StyleTemplate;
+type CreateQueryTemplate = (query: string, selector?: string) => StyleTemplate;
 type AppendStyleToStylesheet = (style: string) => void;
-type GetID = (prefix: number | string) => string;
 
 export type {
   AppendStyleToStylesheet,
-  GetID,
+  CreateQueryTemplate,
+  CreateSelectorTemplate,
   InjectionValue,
   StyleTemplate,
 };

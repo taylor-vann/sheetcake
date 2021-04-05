@@ -1,5 +1,5 @@
 // brian taylor vann
-// template functions
+// template functions types
 
 import { InjectionValue } from "./style_fixture.ts";
 

@@ -3,8 +3,9 @@
 
 import {
   keyframe,
-  mediaQuery,
-  selector,
+  createAttribute,
+  createMediaQuery,
+  createSelector,
   style,
 } from "./template_functions/template_functions.ts";
 
@@ -12,11 +13,9 @@ import {
   checked,
   disabled,
   focus,
-  firstChild,
   hover,
   invalid,
   landscape,
-  lastChild,
   portrait,
   print,
   required,
@@ -27,17 +26,16 @@ import {
 
 export {
   keyframe,
-  mediaQuery,
-  selector,
+  createAttribute,
+  createMediaQuery,
+  createSelector,
   style,
   checked,
   disabled,
   focus,
-  firstChild,
   hover,
   invalid,
   landscape,
-  lastChild,
   portrait,
   print,
   required,

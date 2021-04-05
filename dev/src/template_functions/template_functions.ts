@@ -1,17 +1,30 @@
 // brian taylor vann
 // template functions
 
-import type { StyleTemplate } from "../type_flyweight/style_fixture.ts";
+import type {
+  StyleTemplate,
+  CreateSelectorTemplate,
+  CreateQueryTemplate,
+} from "../type_flyweight/style_fixture.ts";
 import type {
   GetTemplate,
   GetSelector,
   GetMediaQuery,
 } from "../type_flyweight/template_functions.ts";
+
 import { stylesheet, stylesheetIndex } from "../sheet/sheet.ts";
 
-import { getID } from "../receipt/receipt.ts";
-
 type AppendStyleToStylesheet = (style: string) => void;
+type GetID = () => string;
+
+const optimist = Math.floor(Math.random() * 256).toString(16);
+
+const getID: GetID = () => {
+  const stub = stylesheet?.cssRules.length.toString(16);
+  const uniqueID = `${optimist}_${stylesheetIndex}_${stub}`;
+
+  return uniqueID;
+};
 
 const getTemplateAsStr: GetTemplate = (templateArray, injections) => {
   const requestedStyle = [];
@@ -41,7 +54,7 @@ const appendStyleToStylesheet: AppendStyleToStylesheet = (style) => {
 };
 
 const style: StyleTemplate = (templateArray, ...injections) => {
-  const id = getID(stylesheetIndex);
+  const id = getID();
   const template = getTemplateAsStr(templateArray, injections);
   const constructedStyle = `.${id} {${template}}`;
 
@@ -51,7 +64,7 @@ const style: StyleTemplate = (templateArray, ...injections) => {
 };
 
 const keyframe: StyleTemplate = (templateArray, ...injections) => {
-  const id = getID(stylesheetIndex);
+  const id = getID();
   const template = getTemplateAsStr(templateArray, injections);
   const constructedStyle = `@keyframes ${id} {${template}}`;
 
@@ -60,8 +73,8 @@ const keyframe: StyleTemplate = (templateArray, ...injections) => {
   return id;
 };
 
-const selector: GetSelector = ({ selector, templateArray, injections }) => {
-  const id = getID(stylesheetIndex);
+const getSelector: GetSelector = ({ selector, templateArray, injections }) => {
+  const id = getID();
   const template = getTemplateAsStr(templateArray, injections);
   const constructedStyle = `.${id}:${selector} {${template}}`;
 
@@ -70,13 +83,23 @@ const selector: GetSelector = ({ selector, templateArray, injections }) => {
   return id;
 };
 
-const mediaQuery: GetMediaQuery = ({
+const getAttribute: GetSelector = ({ selector, templateArray, injections }) => {
+  const id = getID();
+  const template = getTemplateAsStr(templateArray, injections);
+  const constructedStyle = `.${getID()}[${selector}] {${template}}`;
+
+  appendStyleToStylesheet(constructedStyle);
+
+  return id;
+};
+
+const getMediaQuery: GetMediaQuery = ({
   mediaQuery,
   selector,
   templateArray,
   injections,
 }) => {
-  const id = getID(stylesheetIndex);
+  const id = getID();
   const template = getTemplateAsStr(templateArray, injections);
 
   let constructedStyle = `@media ${mediaQuery} {
@@ -94,9 +117,32 @@ const mediaQuery: GetMediaQuery = ({
   return id;
 };
 
-export {
-  keyframe,
-  mediaQuery,
-  selector,
-  style,
+const createSelector: CreateSelectorTemplate = (selector) => {
+  return (templateArray, ...injections) =>
+    getSelector({
+      selector,
+      templateArray,
+      injections,
+    });
 };
+
+const createAttribute: CreateSelectorTemplate = (selector) => {
+  return (templateArray, ...injections) =>
+    getAttribute({
+      selector,
+      templateArray,
+      injections,
+    });
+};
+
+const createMediaQuery: CreateQueryTemplate = (mediaQuery, selector) => {
+  return (templateArray, ...injections) =>
+    getMediaQuery({
+      mediaQuery,
+      selector,
+      templateArray,
+      injections,
+    });
+};
+
+export { keyframe, style, createAttribute, createSelector, createMediaQuery };
