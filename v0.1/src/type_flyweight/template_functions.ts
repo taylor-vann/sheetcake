@@ -9,23 +9,19 @@ type GetTemplate = (
 ) => string;
 
 interface GetSelectorParams {
-  selector: string,
-  templateArray: TemplateStringsArray,
-  injections: InjectionValue[]
+  selector: string;
+  templateArray: TemplateStringsArray;
+  injections: InjectionValue[];
 }
-type GetSelector = (
-  params: GetSelectorParams,
-) => string;
+type GetSelector = (params: GetSelectorParams) => string;
 
 interface GetMediaQueryParams {
-  mediaQuery: string,
-  selector?: string,
-  templateArray: TemplateStringsArray,
-  injections: InjectionValue[]
+  mediaQuery: string;
+  selector?: string;
+  templateArray: TemplateStringsArray;
+  injections: InjectionValue[];
 }
-type GetMediaQuery = (
-  params: GetMediaQueryParams
-) => string;
+type GetMediaQuery = (params: GetMediaQueryParams) => string;
 
 type AppendStyleToStylesheet = (style: string) => void;
 
