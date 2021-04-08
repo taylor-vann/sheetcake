@@ -29,6 +29,7 @@ const getID: GetID = () => {
 const getTemplateAsStr: GetTemplate = (templateArray, injections) => {
   const requestedStyle = [];
 
+  // injections length?
   const templateLength = templateArray.length;
   let index = 0;
   while (index < templateLength) {
@@ -126,7 +127,7 @@ const createSelector: CreateSelectorTemplate = (selector) => {
     });
 };
 
-const createAttribute: CreateSelectorTemplate = (selector) => {
+const createAttributeSelector: CreateSelectorTemplate = (selector) => {
   return (templateArray, ...injections) =>
     getAttribute({
       selector,
@@ -145,4 +146,4 @@ const createMediaQuery: CreateQueryTemplate = (mediaQuery, selector) => {
     });
 };
 
-export { keyframe, style, createAttribute, createSelector, createMediaQuery };
+export { keyframe, style, createAttributeSelector, createSelector, createMediaQuery };

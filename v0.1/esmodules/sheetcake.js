@@ -25,10 +25,10 @@ const getSheetIndex = (stylesheetElement)=>{
 const stylesheetElement = getStylesheetElement();
 const stylesheet = getStylesheet(stylesheetElement);
 const stylesheetIndex = getSheetIndex(stylesheetElement);
-const optimistic = Math.floor(Math.random() * 256).toString(16);
+const optimist = Math.floor(Math.random() * 256).toString(16);
 const getID = ()=>{
     const stub = stylesheet?.cssRules.length.toString(16);
-    const uniqueID = `${optimistic}_${stylesheetIndex}_${stub}`;
+    const uniqueID = `${optimist}_${stylesheetIndex}_${stub}`;
     return uniqueID;
 };
 const getTemplateAsStr = (templateArray, injections)=>{
@@ -97,7 +97,7 @@ const createSelector1 = (selector)=>{
         })
     ;
 };
-const createAttribute1 = (selector)=>{
+const createAttributeSelector1 = (selector)=>{
     return (templateArray, ...injections)=>getAttribute({
             selector,
             templateArray,
@@ -126,4 +126,4 @@ const screen10081 = createMediaQuery1("screen and (min-width: 1008px)");
 const landscape1 = createMediaQuery1("screen and (orientation: landscape)");
 const portrait1 = createMediaQuery1("screen and (orientation: portrait)");
 const print1 = createMediaQuery1("print");
-export { keyframe1 as keyframe, createAttribute1 as createAttribute, createMediaQuery1 as createMediaQuery, createSelector1 as createSelector, style1 as style, checked1 as checked, disabled1 as disabled, focus1 as focus, hover1 as hover, invalid1 as invalid, landscape1 as landscape, portrait1 as portrait, print1 as print, required1 as required, screen10081 as screen1008, screen6411 as screen641, valid1 as valid };
+export { keyframe1 as keyframe, createAttributeSelector1 as createAttributeSelector, createMediaQuery1 as createMediaQuery, createSelector1 as createSelector, style1 as style, checked1 as checked, disabled1 as disabled, focus1 as focus, hover1 as hover, invalid1 as invalid, landscape1 as landscape, portrait1 as portrait, print1 as print, required1 as required, screen10081 as screen1008, screen6411 as screen641, valid1 as valid };

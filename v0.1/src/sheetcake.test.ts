@@ -4,4 +4,4 @@
 
 const tests = [];
 
-export { };
+export {};
