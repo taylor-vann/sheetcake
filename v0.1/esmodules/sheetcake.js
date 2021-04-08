@@ -54,37 +54,37 @@ const appendStyleToStylesheet = (style)=>{
 const style1 = (templateArray, ...injections)=>{
     const id = getID();
     const template = getTemplateAsStr(templateArray, injections);
-    const constructedStyle = `.${id} {${template}}`;
+    const constructedStyle = `._${id} {${template}}`;
     appendStyleToStylesheet(constructedStyle);
     return id;
 };
 const keyframe1 = (templateArray, ...injections)=>{
     const id = getID();
     const template = getTemplateAsStr(templateArray, injections);
-    const constructedStyle = `@keyframes ${id} {${template}}`;
+    const constructedStyle = `@keyframes _${id} {${template}}`;
     appendStyleToStylesheet(constructedStyle);
     return id;
 };
 const getSelector = ({ selector , templateArray , injections  })=>{
     const id = getID();
     const template = getTemplateAsStr(templateArray, injections);
-    const constructedStyle = `.${id}:${selector} {${template}}`;
+    const constructedStyle = `._${id}:${selector} {${template}}`;
     appendStyleToStylesheet(constructedStyle);
     return id;
 };
-const getAttribute = ({ selector , templateArray , injections  })=>{
+const getAttributeSelector = ({ selector , templateArray , injections ,  })=>{
     const id = getID();
     const template = getTemplateAsStr(templateArray, injections);
-    const constructedStyle = `.${getID()}[${selector}] {${template}}`;
+    const constructedStyle = `._${getID()}[${selector}] {${template}}`;
     appendStyleToStylesheet(constructedStyle);
     return id;
 };
 const getMediaQuery = ({ mediaQuery , selector , templateArray , injections ,  })=>{
     const id = getID();
     const template = getTemplateAsStr(templateArray, injections);
-    let constructedStyle = `@media ${mediaQuery} {\n    .${id} {${template}}\n  }`;
+    let constructedStyle = `@media ${mediaQuery} {\n    ._${id} {${template}}\n  }`;
     if (selector !== undefined) {
-        constructedStyle = `@media ${mediaQuery} {\n      .${id}:${selector} {${template}}\n    }`;
+        constructedStyle = `@media ${mediaQuery} {\n      ._${id}:${selector} {${template}}\n    }`;
     }
     appendStyleToStylesheet(constructedStyle);
     return id;
@@ -98,7 +98,7 @@ const createSelector1 = (selector)=>{
     ;
 };
 const createAttributeSelector1 = (selector)=>{
-    return (templateArray, ...injections)=>getAttribute({
+    return (templateArray, ...injections)=>getAttributeSelector({
             selector,
             templateArray,
             injections

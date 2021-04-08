@@ -57,7 +57,7 @@ const appendStyleToStylesheet: AppendStyleToStylesheet = (style) => {
 const style: StyleTemplate = (templateArray, ...injections) => {
   const id = getID();
   const template = getTemplateAsStr(templateArray, injections);
-  const constructedStyle = `.${id} {${template}}`;
+  const constructedStyle = `._${id} {${template}}`;
 
   appendStyleToStylesheet(constructedStyle);
 
@@ -67,7 +67,7 @@ const style: StyleTemplate = (templateArray, ...injections) => {
 const keyframe: StyleTemplate = (templateArray, ...injections) => {
   const id = getID();
   const template = getTemplateAsStr(templateArray, injections);
-  const constructedStyle = `@keyframes ${id} {${template}}`;
+  const constructedStyle = `@keyframes _${id} {${template}}`;
 
   appendStyleToStylesheet(constructedStyle);
 
@@ -77,17 +77,21 @@ const keyframe: StyleTemplate = (templateArray, ...injections) => {
 const getSelector: GetSelector = ({ selector, templateArray, injections }) => {
   const id = getID();
   const template = getTemplateAsStr(templateArray, injections);
-  const constructedStyle = `.${id}:${selector} {${template}}`;
+  const constructedStyle = `._${id}:${selector} {${template}}`;
 
   appendStyleToStylesheet(constructedStyle);
 
   return id;
 };
 
-const getAttribute: GetSelector = ({ selector, templateArray, injections }) => {
+const getAttributeSelector: GetSelector = ({
+  selector,
+  templateArray,
+  injections,
+}) => {
   const id = getID();
   const template = getTemplateAsStr(templateArray, injections);
-  const constructedStyle = `.${getID()}[${selector}] {${template}}`;
+  const constructedStyle = `._${getID()}[${selector}] {${template}}`;
 
   appendStyleToStylesheet(constructedStyle);
 
@@ -104,12 +108,12 @@ const getMediaQuery: GetMediaQuery = ({
   const template = getTemplateAsStr(templateArray, injections);
 
   let constructedStyle = `@media ${mediaQuery} {
-    .${id} {${template}}
+    ._${id} {${template}}
   }`;
 
   if (selector !== undefined) {
     constructedStyle = `@media ${mediaQuery} {
-      .${id}:${selector} {${template}}
+      ._${id}:${selector} {${template}}
     }`;
   }
 
@@ -129,7 +133,7 @@ const createSelector: CreateSelectorTemplate = (selector) => {
 
 const createAttributeSelector: CreateSelectorTemplate = (selector) => {
   return (templateArray, ...injections) =>
-    getAttribute({
+    getAttributeSelector({
       selector,
       templateArray,
       injections,
@@ -146,4 +150,14 @@ const createMediaQuery: CreateQueryTemplate = (mediaQuery, selector) => {
     });
 };
 
-export { keyframe, style, createAttributeSelector, createSelector, createMediaQuery };
+export {
+  appendStyleToStylesheet,
+  createAttributeSelector,
+  createMediaQuery,
+  createSelector,
+  getID,
+  getTemplateAsStr,
+  keyframe,
+  optimist,
+  style,
+};

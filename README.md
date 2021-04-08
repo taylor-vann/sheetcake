@@ -8,32 +8,6 @@ Unminified and uncompressed < 5 kb
 
 Clone this repository and copy a version into your codebase.
 
-### ESModules
-
-Load `v0.1` into browser scope.
-
-#### HTML
-```html
-<head>
-  <link
-    rel="modulepreload"
-    href="https://raw.githubusercontent.com/taylor-vann/sheetcake/main/v0.1/esmodules/sheetcake.js">
-  </link>
-</head>
-
-...
-
-<script
-  type="module"
-  src="https://raw.githubusercontent.com/taylor-vann/sheetcake/main/v0.1/esmodules/sheetcake.js">
-</script>
-```
-
-#### ECMAScript
-```js
-import { style } from "https://raw.githubusercontent.com/taylor-vann/sheetcake/main/v0.1/esmodules/sheetcake.js";
-```
-
 #### Deno
 
 Import `v0.1` into a deno project.
