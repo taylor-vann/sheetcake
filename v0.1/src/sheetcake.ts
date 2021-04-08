@@ -3,7 +3,7 @@
 
 import {
   keyframe,
-  createAttribute,
+  createAttributeSelector,
   createMediaQuery,
   createSelector,
   style,
@@ -26,7 +26,7 @@ import {
 
 export {
   keyframe,
-  createAttribute,
+  createAttributeSelector,
   createMediaQuery,
   createSelector,
   style,

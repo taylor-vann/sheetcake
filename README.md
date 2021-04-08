@@ -1,27 +1,23 @@
 # SheetCake
 
-Create CSS in TS / JS. 
+Sheetcake is an alternative to modular CSS for buildless environments.
 
 Unminified and uncompressed < 5 kb
 
-## Abstract
-
-Sheetcake is an alternative to modular CSS for buildless environments.
-
 ## Install
 
-Clone Sheetcake and copy a version into your codebase.
+Clone this repository and copy a version into your codebase.
 
 ### ESModules
 
-Load `v0` into browser scope.
+Load `v0.1` into browser scope.
 
 #### HTML
-```
+```html
 <head>
   <link
     rel="modulepreload"
-    href="https://raw.githubusercontent.com/taylor-vann/sheetcake/main/dist/v0/esmodules/sheetcake.js">
+    href="https://raw.githubusercontent.com/taylor-vann/sheetcake/main/v0.1/esmodules/sheetcake.js">
   </link>
 </head>
 
@@ -29,23 +25,22 @@ Load `v0` into browser scope.
 
 <script
   type="module"
-  src="https://raw.githubusercontent.com/taylor-vann/sheetcake/main/dist/v0/esmodules/sheetcake.js">
+  src="https://raw.githubusercontent.com/taylor-vann/sheetcake/main/v0.1/esmodules/sheetcake.js">
 </script>
 ```
 
 #### ECMAScript
-```
-import { style } from "https://raw.githubusercontent.com/taylor-vann/sheetcake/main/dist/v0/esmodules/sheetcake.js";
-```
-
-#### Deno / Typescript
-
-Import `v0` into a deno project.
-
-```
-import { style } from "https://raw.githubusercontent.com/taylor-vann/sheetcake/main/v0/srcsheetcake.ts";
+```js
+import { style } from "https://raw.githubusercontent.com/taylor-vann/sheetcake/main/v0.1/esmodules/sheetcake.js";
 ```
 
+#### Deno
+
+Import `v0.1` into a deno project.
+
+```ts
+import { style } from "https://raw.githubusercontent.com/taylor-vann/sheetcake/main/v0.1/src/sheetcake.ts";
+```
 
 ## How to use
 
@@ -53,18 +48,18 @@ import { style } from "https://raw.githubusercontent.com/taylor-vann/sheetcake/m
 
 Create a CSS declaration with the `style` function.
 
-```
+```ts
 const bluebox = style`
   color: white;
   background-color: blue;
 `;
 ```
 
-A classname is assigned to `bluebox` to be used in the `class` attribute of an HTMLElement.
+An optimistically unique classname is assigned to `bluebox` and can be used in the `class` attribute of an HTMLElement.
 
 Here is an example of using Sheetcake with LitElement:
 
-```
+```ts
 import { style } from "../sheetcake";
 import { LitElement } from "lit-element";
 
@@ -74,11 +69,11 @@ const bluebox = style`
 `;
 
 class MyElement extends LitElement {
-	render() {
-		return html`
-			<div class="${bluebox}">Hello, world!</div>
-		`;
-	}
+  render() {
+    return html`
+      <div class="${bluebox}">Hello, world!</div>
+    `;
+  }
 }
 ```
 
@@ -86,7 +81,7 @@ class MyElement extends LitElement {
 
 Parts of CSS declarations can be isolated as *fragments* and reused later.
 
-```
+```ts
 const borders = `
   border: 1px solid #efefef;
 `;
@@ -99,7 +94,6 @@ const mediumTile = `
 const bluebox = style`
   ${borders}
   ${mediumTile}
-
   color: white;
   background-color: blue;
 `;
@@ -109,7 +103,7 @@ const bluebox = style`
 
 Sheetcake has template functions for common CSS selectors:
 
-```
+```ts
 import { hover, focus } from "../sheetcake.js";
 
 const hoverBox = hover`
@@ -123,7 +117,7 @@ const focusBox = focus`
 
 Not every CSS selector has a corresponding function. Use `createSelector` to generate custom selector functions.
 
-```
+```ts
 import { createSelector } from "../sheetcake.js";
 
 const focusWithin = createSelector("focus-within");
@@ -134,10 +128,10 @@ const purpleBox = focusWithin`
 `;
 ```
 
-This will create CSS like the example below:
+This will create a CSS declaration like the example below:
 
-```
-.cake_2_EF:focus-within {
+```css
+.8E_3_BC:focus-within {
   color: white;
   background-color: purple
 }
@@ -147,7 +141,7 @@ This will create CSS like the example below:
 
 Use `createAttribute` to return a custom attribute function.
 
-```
+```ts
 import { createAttribute } from "../sheetcake.js";
 
 const openTab = createAttribute(`target="_blank"`);
@@ -159,10 +153,10 @@ const pinkLink = openTab`
 `;
 ```
 
-This will create CSS like the example below:
+This will create a CSS declaration like the example below:
 
-```
-.cake_2_FA[target="_blank"] {
+```css
+.4C_2_FA[target="_blank"] {
   background-color: pink;
   color: white;
   padding: 4px 8px;
@@ -173,7 +167,7 @@ This will create CSS like the example below:
 
 Sheetcake has template functions for common media queries:
 
-```
+```ts
 import { landscape } from "../sheetcake.js";
 
 const printMedia = landscape`
@@ -183,7 +177,7 @@ const printMedia = landscape`
 
 Use `createMediaQuery` to generate custom media query functions.
 
-```
+```ts
 import { createMediaQuery } from "../sheetcake.js";
 
 const screen900 = createMediaQuery("screen and (min-width: 900px)");
@@ -194,11 +188,11 @@ const purpleBox = screen900`
 `;
 ```
 
-This will create CSS like the example below:
+This will create a CSS declaration like the example below:
 
-```
+```css
 @media screen and (min-width: 900px) {
-  .cake_2_EF:focus-within {
+  .3A_7_91:focus-within {
     height: 128px;
     width: 128px;
   }
@@ -207,9 +201,9 @@ This will create CSS like the example below:
 
 ### Keyframes
 
-CSS animations are created with `keyframes`.
+Create CSS animations with `keyframes`.
 
-```
+```ts
 import { keyframes } from "../sheetcake.js";
 
 const fade = keyframes`
