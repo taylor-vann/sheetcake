@@ -79,51 +79,35 @@ const getAttributeSelector = ({ selector , templateArray , injections ,  })=>{
     appendStyleToStylesheet(constructedStyle);
     return id;
 };
-const getMediaQuery = ({ mediaQuery , selector , templateArray , injections ,  })=>{
+const getMediaQuery = ({ mediaQuery , templateArray , injections ,  })=>{
     const id = getID();
     const template = getTemplateAsStr(templateArray, injections);
-    let constructedStyle = `@media ${mediaQuery} {\n    ._${id} {${template}}\n  }`;
-    if (selector !== undefined) {
-        constructedStyle = `@media ${mediaQuery} {\n      ._${id}:${selector} {${template}}\n    }`;
-    }
+    const constructedStyle = `@media ${mediaQuery} {\n    ._${id} {${template}}\n  }`;
     appendStyleToStylesheet(constructedStyle);
     return id;
 };
 const createSelector1 = (selector)=>{
     return (templateArray, ...injections)=>getSelector({
+            injections,
             selector,
-            templateArray,
-            injections
+            templateArray
         })
     ;
 };
 const createAttributeSelector1 = (selector)=>{
     return (templateArray, ...injections)=>getAttributeSelector({
+            injections,
             selector,
-            templateArray,
-            injections
+            templateArray
         })
     ;
 };
 const createMediaQuery1 = (mediaQuery, selector)=>{
     return (templateArray, ...injections)=>getMediaQuery({
+            injections,
             mediaQuery,
-            selector,
-            templateArray,
-            injections
+            templateArray
         })
     ;
 };
-const focus1 = createSelector1("focus");
-const hover1 = createSelector1("hover");
-const checked1 = createSelector1("checked");
-const valid1 = createSelector1("valid");
-const invalid1 = createSelector1("invalid");
-const required1 = createSelector1("required");
-const disabled1 = createSelector1("disabled");
-const screen6411 = createMediaQuery1("screen and (min-width: 641px)");
-const screen10081 = createMediaQuery1("screen and (min-width: 1008px)");
-const landscape1 = createMediaQuery1("screen and (orientation: landscape)");
-const portrait1 = createMediaQuery1("screen and (orientation: portrait)");
-const print1 = createMediaQuery1("print");
-export { keyframe1 as keyframe, createAttributeSelector1 as createAttributeSelector, createMediaQuery1 as createMediaQuery, createSelector1 as createSelector, style1 as style, checked1 as checked, disabled1 as disabled, focus1 as focus, hover1 as hover, invalid1 as invalid, landscape1 as landscape, portrait1 as portrait, print1 as print, required1 as required, screen10081 as screen1008, screen6411 as screen641, valid1 as valid };
+export { keyframe1 as keyframe, createAttributeSelector1 as createAttributeSelector, createMediaQuery1 as createMediaQuery, createSelector1 as createSelector, style1 as style };

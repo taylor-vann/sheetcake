@@ -1,7 +1,17 @@
 // brian taylor vann
 // template functions types
 
-import { InjectionValue } from "./style_fixture.ts";
+type InjectionValue = number | string;
+
+type StyleTemplate = (
+  templateArray: TemplateStringsArray,
+  ...injections: InjectionValue[]
+) => string;
+
+type CreateSelectorTemplate = (selector: string) => StyleTemplate;
+type CreateQueryTemplate = (query: string, selector?: string) => StyleTemplate;
+type GetID = () => string;
+type AppendStyleToStylesheet = (style: string) => void;
 
 type GetTemplate = (
   templateArray: TemplateStringsArray,
@@ -17,17 +27,19 @@ type GetSelector = (params: GetSelectorParams) => string;
 
 interface GetMediaQueryParams {
   mediaQuery: string;
-  selector?: string;
   templateArray: TemplateStringsArray;
   injections: InjectionValue[];
 }
 type GetMediaQuery = (params: GetMediaQueryParams) => string;
 
-type AppendStyleToStylesheet = (style: string) => void;
-
 export type {
   AppendStyleToStylesheet,
-  GetTemplate,
-  GetSelector,
+  CreateQueryTemplate,
+  CreateSelectorTemplate,
   GetMediaQuery,
+  GetSelector,
+  GetTemplate,
+  InjectionValue,
+  StyleTemplate,
+  GetID,
 };

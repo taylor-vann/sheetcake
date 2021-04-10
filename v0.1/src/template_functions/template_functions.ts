@@ -2,20 +2,17 @@
 // template functions
 
 import type {
-  StyleTemplate,
-  CreateSelectorTemplate,
-  CreateQueryTemplate,
-} from "../type_flyweight/style_fixture.ts";
-import type {
   GetTemplate,
   GetSelector,
   GetMediaQuery,
+  StyleTemplate,
+  CreateSelectorTemplate,
+  CreateQueryTemplate,
+  AppendStyleToStylesheet,
+  GetID,
 } from "../type_flyweight/template_functions.ts";
 
 import { stylesheet, stylesheetIndex } from "../sheet/sheet.ts";
-
-type AppendStyleToStylesheet = (style: string) => void;
-type GetID = () => string;
 
 const optimist = Math.floor(Math.random() * 256).toString(16);
 
@@ -28,9 +25,8 @@ const getID: GetID = () => {
 
 const getTemplateAsStr: GetTemplate = (templateArray, injections) => {
   const requestedStyle = [];
-
-  // injections length?
   const templateLength = templateArray.length;
+
   let index = 0;
   while (index < templateLength) {
     const templatePiece = templateArray[index];
@@ -100,22 +96,14 @@ const getAttributeSelector: GetSelector = ({
 
 const getMediaQuery: GetMediaQuery = ({
   mediaQuery,
-  selector,
   templateArray,
   injections,
 }) => {
   const id = getID();
   const template = getTemplateAsStr(templateArray, injections);
-
-  let constructedStyle = `@media ${mediaQuery} {
+  const constructedStyle = `@media ${mediaQuery} {
     ._${id} {${template}}
   }`;
-
-  if (selector !== undefined) {
-    constructedStyle = `@media ${mediaQuery} {
-      ._${id}:${selector} {${template}}
-    }`;
-  }
 
   appendStyleToStylesheet(constructedStyle);
 
@@ -125,28 +113,27 @@ const getMediaQuery: GetMediaQuery = ({
 const createSelector: CreateSelectorTemplate = (selector) => {
   return (templateArray, ...injections) =>
     getSelector({
+      injections,
       selector,
       templateArray,
-      injections,
     });
 };
 
 const createAttributeSelector: CreateSelectorTemplate = (selector) => {
   return (templateArray, ...injections) =>
     getAttributeSelector({
+      injections,
       selector,
       templateArray,
-      injections,
     });
 };
 
 const createMediaQuery: CreateQueryTemplate = (mediaQuery, selector) => {
   return (templateArray, ...injections) =>
     getMediaQuery({
-      mediaQuery,
-      selector,
-      templateArray,
       injections,
+      mediaQuery,
+      templateArray,
     });
 };
 

@@ -53,14 +53,14 @@ const getStylesheetInstance = ()=>{
         assertions.push("stylesheet index be a positive integer.");
     }
 };
-const tests4 = [
+const tests3 = [
     stylesheetExists,
     stylesheetIndexExists,
     getStylesheetInstance
 ];
 const unitTestSheet = {
     title,
-    tests: tests4,
+    tests: tests3,
     runTestsAsynchronously: true
 };
 const optimist = Math.floor(Math.random() * 256).toString(16);
@@ -117,38 +117,34 @@ const getAttributeSelector = ({ selector , templateArray , injections ,  })=>{
     appendStyleToStylesheet(constructedStyle);
     return id;
 };
-const getMediaQuery = ({ mediaQuery , selector , templateArray , injections ,  })=>{
+const getMediaQuery = ({ mediaQuery , templateArray , injections ,  })=>{
     const id = getID();
     const template = getTemplateAsStr(templateArray, injections);
-    let constructedStyle = `@media ${mediaQuery} {\n    ._${id} {${template}}\n  }`;
-    if (selector !== undefined) {
-        constructedStyle = `@media ${mediaQuery} {\n      ._${id}:${selector} {${template}}\n    }`;
-    }
+    const constructedStyle = `@media ${mediaQuery} {\n    ._${id} {${template}}\n  }`;
     appendStyleToStylesheet(constructedStyle);
     return id;
 };
 const createSelector = (selector)=>{
     return (templateArray, ...injections)=>getSelector({
+            injections,
             selector,
-            templateArray,
-            injections
+            templateArray
         })
     ;
 };
 const createAttributeSelector = (selector)=>{
     return (templateArray, ...injections)=>getAttributeSelector({
+            injections,
             selector,
-            templateArray,
-            injections
+            templateArray
         })
     ;
 };
 const createMediaQuery = (mediaQuery, selector)=>{
     return (templateArray, ...injections)=>getMediaQuery({
+            injections,
             mediaQuery,
-            selector,
-            templateArray,
-            injections
+            templateArray
         })
     ;
 };
@@ -280,197 +276,8 @@ const unitTestTemplateFunctions = {
     tests: tests1,
     runTestsAsynchronously: true
 };
-const focus = createSelector("focus");
-const hover = createSelector("hover");
-const checked = createSelector("checked");
-const valid = createSelector("valid");
-const invalid = createSelector("invalid");
-const required = createSelector("required");
-const disabled = createSelector("disabled");
-const screen641 = createMediaQuery("screen and (min-width: 641px)");
-const screen1008 = createMediaQuery("screen and (min-width: 1008px)");
-const landscape = createMediaQuery("screen and (orientation: landscape)");
-const portrait = createMediaQuery("screen and (orientation: portrait)");
-const print = createMediaQuery("print");
-const title2 = "sheetcake:compound_templates";
-const testChecked = ()=>{
-    const assertions = [];
-    if (stylesheet === undefined) {
-        assertions.push("stylesheet should be defined");
-        return assertions;
-    }
-    const styleCount = stylesheet.cssRules.length;
-    checked`\n	color: green;\n  `;
-    if (styleCount + 1 !== stylesheet.cssRules.length) {
-        assertions.push("stylesheet length should have increased by 1.");
-    }
-    return assertions;
-};
-const testDisabled = ()=>{
-    const assertions = [];
-    if (stylesheet === undefined) {
-        assertions.push("stylesheet should be defined");
-        return assertions;
-    }
-    const styleCount = stylesheet.cssRules.length;
-    disabled`\n	color: purple;\n	`;
-    if (styleCount + 1 !== stylesheet.cssRules.length) {
-        assertions.push("stylesheet length should have increased by 1.");
-    }
-    return assertions;
-};
-const testFocus = ()=>{
-    const assertions = [];
-    if (stylesheet === undefined) {
-        assertions.push("stylesheet should be defined");
-        return assertions;
-    }
-    const styleCount = stylesheet.cssRules.length;
-    focus`\n	color: blue;\n	`;
-    if (styleCount + 1 !== stylesheet.cssRules.length) {
-        assertions.push("stylesheet length should have increased by 1.");
-    }
-    return assertions;
-};
-const testHover = ()=>{
-    const assertions = [];
-    if (stylesheet === undefined) {
-        assertions.push("stylesheet should be defined");
-        return assertions;
-    }
-    const styleCount = stylesheet.cssRules.length;
-    hover`\n	color: red;\n	`;
-    if (styleCount + 1 !== stylesheet.cssRules.length) {
-        assertions.push("stylesheet length should have increased by 1.");
-    }
-    return assertions;
-};
-const testInvalid = ()=>{
-    const assertions = [];
-    if (stylesheet === undefined) {
-        assertions.push("stylesheet should be defined");
-        return assertions;
-    }
-    const styleCount = stylesheet.cssRules.length;
-    invalid`\n	color: orange;\n	`;
-    if (styleCount + 1 !== stylesheet.cssRules.length) {
-        assertions.push("stylesheet length should have increased by 1.");
-    }
-    return assertions;
-};
-const testLandscape = ()=>{
-    const assertions = [];
-    if (stylesheet === undefined) {
-        assertions.push("stylesheet should be defined");
-        return assertions;
-    }
-    const styleCount = stylesheet.cssRules.length;
-    landscape`\n	color: black;\n	`;
-    if (styleCount + 1 !== stylesheet.cssRules.length) {
-        assertions.push("stylesheet length should have increased by 1.");
-    }
-    return assertions;
-};
-const testPortrait = ()=>{
-    const assertions = [];
-    if (stylesheet === undefined) {
-        assertions.push("stylesheet should be defined");
-        return assertions;
-    }
-    const styleCount = stylesheet.cssRules.length;
-    portrait`\n	color: purple;\n	`;
-    if (styleCount + 1 !== stylesheet.cssRules.length) {
-        assertions.push("stylesheet length should have increased by 1.");
-    }
-    return assertions;
-};
-const testPrint = ()=>{
-    const assertions = [];
-    if (stylesheet === undefined) {
-        assertions.push("stylesheet should be defined");
-        return assertions;
-    }
-    const styleCount = stylesheet.cssRules.length;
-    print`\n	color: pink;\n	`;
-    if (styleCount + 1 !== stylesheet.cssRules.length) {
-        assertions.push("stylesheet length should have increased by 1.");
-    }
-    return assertions;
-};
-const testRequired = ()=>{
-    const assertions = [];
-    if (stylesheet === undefined) {
-        assertions.push("stylesheet should be defined");
-        return assertions;
-    }
-    const styleCount = stylesheet.cssRules.length;
-    required`\n	color: green;\n	`;
-    if (styleCount + 1 !== stylesheet.cssRules.length) {
-        assertions.push("stylesheet length should have increased by 1.");
-    }
-    return assertions;
-};
-const testScreen1008 = ()=>{
-    const assertions = [];
-    if (stylesheet === undefined) {
-        assertions.push("stylesheet should be defined");
-        return assertions;
-    }
-    const styleCount = stylesheet.cssRules.length;
-    screen1008`\n	color: red;\n	`;
-    if (styleCount + 1 !== stylesheet.cssRules.length) {
-        assertions.push("stylesheet length should have increased by 1.");
-    }
-    return assertions;
-};
-const testScreen641 = ()=>{
-    const assertions = [];
-    if (stylesheet === undefined) {
-        assertions.push("stylesheet should be defined");
-        return assertions;
-    }
-    const styleCount = stylesheet.cssRules.length;
-    screen641`\n	color: orange;\n	`;
-    if (styleCount + 1 !== stylesheet.cssRules.length) {
-        assertions.push("stylesheet length should have increased by 1.");
-    }
-    return assertions;
-};
-const testValid = ()=>{
-    const assertions = [];
-    if (stylesheet === undefined) {
-        assertions.push("stylesheet should be defined");
-        return assertions;
-    }
-    const styleCount = stylesheet.cssRules.length;
-    valid`\n	color: orange;\n	`;
-    if (styleCount + 1 !== stylesheet.cssRules.length) {
-        assertions.push("stylesheet length should have increased by 1.");
-    }
-    return assertions;
-};
 const tests2 = [
-    testChecked,
-    testDisabled,
-    testFocus,
-    testHover,
-    testInvalid,
-    testLandscape,
-    testPortrait,
-    testPrint,
-    testRequired,
-    testScreen1008,
-    testScreen641,
-    testValid, 
-];
-const unitTestCompoundFunctions = {
-    title: title2,
-    tests: tests2,
-    runTestsAsynchronously: true
-};
-const tests3 = [
     unitTestSheet,
-    unitTestTemplateFunctions,
-    unitTestCompoundFunctions, 
+    unitTestTemplateFunctions, 
 ];
-export { tests3 as tests };
+export { tests2 as tests };

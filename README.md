@@ -1,8 +1,8 @@
 # SheetCake
 
-Sheetcake is an alternative to modular CSS for buildless environments.
+CSS-in-JS for buildless environments.
 
-Unminified and uncompressed < 5 kb
+Unminified and uncompressed < 4 kb
 
 ## Install
 
@@ -29,9 +29,9 @@ const bluebox = style`
 `;
 ```
 
-An optimistically unique classname is assigned to `bluebox` and can be used in the `class` attribute of an HTMLElement.
+An optimistically unique classname is assigned to `bluebox` to be referenced in the `class` attribute of an HTMLElement.
 
-Here is an example of using Sheetcake with LitElement:
+Here is an example of Sheetcake working with LitElement:
 
 ```ts
 import { style } from "../sheetcake";
@@ -73,106 +73,6 @@ const bluebox = style`
 `;
 ```
 
-### Selectors
-
-Sheetcake has template functions for common CSS selectors:
-
-```ts
-import { hover, focus } from "../sheetcake.js";
-
-const hoverBox = hover`
-  background-color: orange;
-`;
-
-const focusBox = focus`
-  background-color: plum;
-`;
-```
-
-Not every CSS selector has a corresponding function. Use `createSelector` to generate custom selector functions.
-
-```ts
-import { createSelector } from "../sheetcake.js";
-
-const focusWithin = createSelector("focus-within");
-
-const purpleBox = focusWithin`
-  color: white;
-  background-color: purple;
-`;
-```
-
-This will create a CSS declaration like the example below:
-
-```css
-.8E_3_BC:focus-within {
-  color: white;
-  background-color: purple
-}
-```
-
-### Attributes
-
-Use `createAttribute` to return a custom attribute function.
-
-```ts
-import { createAttribute } from "../sheetcake.js";
-
-const openTab = createAttribute(`target="_blank"`);
-
-const pinkLink = openTab`
-  background-color: pink;
-  color: white;
-  padding: 4px 8px;
-`;
-```
-
-This will create a CSS declaration like the example below:
-
-```css
-.4C_2_FA[target="_blank"] {
-  background-color: pink;
-  color: white;
-  padding: 4px 8px;
-}
-```
-
-### Media Queries
-
-Sheetcake has template functions for common media queries:
-
-```ts
-import { landscape } from "../sheetcake.js";
-
-const printMedia = landscape`
-  max-width: 200px;
-`;
-```
-
-Use `createMediaQuery` to generate custom media query functions.
-
-```ts
-import { createMediaQuery } from "../sheetcake.js";
-
-const screen900 = createMediaQuery("screen and (min-width: 900px)");
-
-const purpleBox = screen900`
-  height: 128px;
-  width: 128px;
-`;
-```
-
-This will create a CSS declaration like the example below:
-
-```css
-@media screen and (min-width: 900px) {
-  .3A_7_91:focus-within {
-    height: 128px;
-    width: 128px;
-  }
-}
-```
-
 ### Keyframes
 
 Create CSS animations with `keyframes`.
@@ -191,7 +91,83 @@ const flashText = hover`
 `;
 ```
 
-The example above creates an animation with `keyframes` and returns the class name. The class name is used in the `animation` property in `focus`.
+The example above creates an animation with `keyframes` and returns a class name. The class name is used in the `animation` property in `flashText`.
+
+### Selectors
+
+Use `createSelector` to generate custom selector functions.
+
+```ts
+import { createSelector } from "../sheetcake.js";
+
+const hover = createSelector("hover");
+
+const purpleBox = hover`
+  color: white;
+  background-color: purple;
+`;
+```
+
+This will create a CSS declaration like the example below:
+
+```css
+.8E_3_BC:hover {
+  color: white;
+  background-color: purple
+}
+```
+
+### Attribute Selectors
+
+Use `createAttributeSelector` to return a custom attribute function.
+
+```ts
+import { createAttribute } from "../sheetcake.js";
+
+const openTabAnchor = createAttribute(`target="_blank"`);
+
+const pinkLink = openTabAnchor`
+  background-color: pink;
+  color: white;
+  padding: 4px 8px;
+`;
+```
+
+This will create a CSS declaration like the example below:
+
+```css
+.4C_2_FA[target="_blank"] {
+  background-color: pink;
+  color: white;
+  padding: 4px 8px;
+}
+```
+
+### Media Queries
+
+Use `createMediaQuery` to generate custom media query functions.
+
+```ts
+import { createMediaQuery } from "../sheetcake.js";
+
+const screen900 = createMediaQuery("screen and (min-width: 900px)");
+
+const purpleBox = screen900`
+  height: 128px;
+  width: 128px;
+`;
+```
+
+This will create a CSS declaration like the example below:
+
+```css
+@media screen and (min-width: 900px) {
+  .3A_7_91 {
+    height: 128px;
+    width: 128px;
+  }
+}
+```
 
 ## License
 
