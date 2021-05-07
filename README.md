@@ -29,7 +29,8 @@ const bluebox = style`
 `;
 ```
 
-An optimistically unique classname is assigned to `bluebox` to be referenced in the `class` attribute of an HTMLElement.
+An optimistically unique classname is assigned to `bluebox` to be referenced in
+the `class` attribute of an HTMLElement.
 
 Here is an example of Sheetcake working with LitElement:
 
@@ -53,7 +54,7 @@ class MyElement extends LitElement {
 
 ### Fragments
 
-Parts of CSS declarations can be isolated as *fragments* and reused later.
+Parts of CSS declarations can be isolated as _fragments_ and reused later.
 
 ```ts
 const borders = `
@@ -86,12 +87,13 @@ const fade = keyframes`
   100% { opacity: 0; }
 `;
 
-const flashText = hover`
+const flashText = style`
   animation: ${fade} 0.25s infinte;
 `;
 ```
 
-The example above creates an animation with `keyframes` and returns a class name. The class name is used in the `animation` property in `flashText`.
+The example above creates an animation with `keyframes` and returns a class
+name. The class name is used in the `animation` property in `flashText`.
 
 ### Selectors
 

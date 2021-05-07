@@ -106,7 +106,7 @@ const createAttributeSelector1 = (selector)=>{
         })
     ;
 };
-const createMediaQuery1 = (mediaQuery, selector)=>{
+const createMediaQuery1 = (mediaQuery)=>{
     return (templateArray, ...injections)=>getMediaQuery({
             injections,
             mediaQuery,

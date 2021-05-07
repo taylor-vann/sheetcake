@@ -133,7 +133,7 @@ const createAttributeSelector: CreateSelectorTemplate = (selector) => {
     });
 };
 
-const createMediaQuery: CreateQueryTemplate = (mediaQuery, selector) => {
+const createMediaQuery: CreateQueryTemplate = (mediaQuery) => {
   return (templateArray, ...injections) =>
     getMediaQuery({
       injections,
