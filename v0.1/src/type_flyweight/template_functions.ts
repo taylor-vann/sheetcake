@@ -15,7 +15,7 @@ type AppendStyleToStylesheet = (style: string) => void;
 
 type GetTemplate = (
   templateArray: TemplateStringsArray,
-  injections: InjectionValue[]
+  injections: InjectionValue[],
 ) => string;
 
 interface GetSelectorParams {
@@ -36,10 +36,10 @@ export type {
   AppendStyleToStylesheet,
   CreateQueryTemplate,
   CreateSelectorTemplate,
+  GetID,
   GetMediaQuery,
   GetSelector,
   GetTemplate,
   InjectionValue,
   StyleTemplate,
-  GetID,
 };

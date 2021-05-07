@@ -2,23 +2,28 @@
 // template functions
 
 import type {
-  GetTemplate,
-  GetSelector,
-  GetMediaQuery,
-  StyleTemplate,
-  CreateSelectorTemplate,
-  CreateQueryTemplate,
   AppendStyleToStylesheet,
+  CreateQueryTemplate,
+  CreateSelectorTemplate,
   GetID,
+  GetMediaQuery,
+  GetSelector,
+  GetTemplate,
+  StyleTemplate,
 } from "../type_flyweight/template_functions.ts";
 
 import { stylesheet, stylesheetIndex } from "../sheet/sheet.ts";
 
-const optimist = Math.floor(Math.random() * 256).toString(16);
+let prefix = "";
+const optimist = Math.floor(Math.random() * 2056).toString(16);
+
+const setPrefix = (updatedPrefix: string) => {
+  prefix = updatedPrefix;
+};
 
 const getID: GetID = () => {
   const stub = stylesheet?.cssRules.length.toString(16);
-  const uniqueID = `${optimist}_${stylesheetIndex}_${stub}`;
+  const uniqueID = `${prefix}${optimist}_${stylesheetIndex}_${stub}`;
 
   return uniqueID;
 };
@@ -53,9 +58,9 @@ const appendStyleToStylesheet: AppendStyleToStylesheet = (style) => {
 const style: StyleTemplate = (templateArray, ...injections) => {
   const id = getID();
   const template = getTemplateAsStr(templateArray, injections);
-  const constructedStyle = `._${id} {${template}}`;
+  const builtStyle = `._${id} {${template}}`;
 
-  appendStyleToStylesheet(constructedStyle);
+  appendStyleToStylesheet(builtStyle);
 
   return id;
 };
@@ -63,9 +68,9 @@ const style: StyleTemplate = (templateArray, ...injections) => {
 const keyframe: StyleTemplate = (templateArray, ...injections) => {
   const id = getID();
   const template = getTemplateAsStr(templateArray, injections);
-  const constructedStyle = `@keyframes _${id} {${template}}`;
+  const builtStyle = `@keyframes _${id} {${template}}`;
 
-  appendStyleToStylesheet(constructedStyle);
+  appendStyleToStylesheet(builtStyle);
 
   return id;
 };
@@ -73,9 +78,9 @@ const keyframe: StyleTemplate = (templateArray, ...injections) => {
 const getSelector: GetSelector = ({ selector, templateArray, injections }) => {
   const id = getID();
   const template = getTemplateAsStr(templateArray, injections);
-  const constructedStyle = `._${id}:${selector} {${template}}`;
+  const builtStyle = `._${id}:${selector} {${template}}`;
 
-  appendStyleToStylesheet(constructedStyle);
+  appendStyleToStylesheet(builtStyle);
 
   return id;
 };
@@ -87,9 +92,9 @@ const getAttributeSelector: GetSelector = ({
 }) => {
   const id = getID();
   const template = getTemplateAsStr(templateArray, injections);
-  const constructedStyle = `._${getID()}[${selector}] {${template}}`;
+  const builtStyle = `._${getID()}[${selector}] {${template}}`;
 
-  appendStyleToStylesheet(constructedStyle);
+  appendStyleToStylesheet(builtStyle);
 
   return id;
 };
@@ -101,11 +106,11 @@ const getMediaQuery: GetMediaQuery = ({
 }) => {
   const id = getID();
   const template = getTemplateAsStr(templateArray, injections);
-  const constructedStyle = `@media ${mediaQuery} {
+  const builtStyle = `@media ${mediaQuery} {
     ._${id} {${template}}
   }`;
 
-  appendStyleToStylesheet(constructedStyle);
+  appendStyleToStylesheet(builtStyle);
 
   return id;
 };
@@ -146,5 +151,6 @@ export {
   getTemplateAsStr,
   keyframe,
   optimist,
+  setPrefix,
   style,
 };
