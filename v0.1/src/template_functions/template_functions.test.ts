@@ -39,7 +39,7 @@ const testGetId = () => {
 
   if (idSplit.length !== 3) {
     assertions.push(
-      "getID should return a three part ID separated by '_' an underscore."
+      "getID should return a three part ID separated by '_' an underscore.",
     );
   }
 

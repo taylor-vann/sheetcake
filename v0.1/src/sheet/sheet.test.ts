@@ -1,9 +1,9 @@
 import {
-  getStylesheetElement,
-  getStylesheet,
   getSheetIndex,
-  stylesheetIndex,
+  getStylesheet,
+  getStylesheetElement,
   stylesheet,
+  stylesheetIndex,
 } from "./sheet.ts";
 
 const title = "sheetcake:sheet";

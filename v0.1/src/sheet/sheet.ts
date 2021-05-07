@@ -2,9 +2,9 @@
 // sheet
 
 import type {
-  GetStylesheetElement,
-  GetStylesheet,
   GetSheetIndex,
+  GetStylesheet,
+  GetStylesheetElement,
 } from "../type_flyweight/sheet.ts";
 
 const getStylesheetElement: GetStylesheetElement = () => {
@@ -42,9 +42,9 @@ const stylesheet = getStylesheet(stylesheetElement);
 const stylesheetIndex = getSheetIndex(stylesheetElement);
 
 export {
-  getStylesheetElement,
-  getStylesheet,
   getSheetIndex,
-  stylesheetIndex,
+  getStylesheet,
+  getStylesheetElement,
   stylesheet,
+  stylesheetIndex,
 };

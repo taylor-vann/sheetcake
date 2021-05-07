@@ -2,9 +2,10 @@
 // sheetcake
 
 export {
-  keyframe,
   createAttributeSelector,
   createMediaQuery,
   createSelector,
+  keyframe,
+  setPrefix,
   style,
 } from "./template_functions/template_functions.ts";
