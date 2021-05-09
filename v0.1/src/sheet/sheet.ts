@@ -8,10 +8,10 @@ import type {
 } from "../type_flyweight/sheet.ts";
 
 const getStylesheetElement: GetStylesheetElement = () => {
-  const stylesheetElement = document.createElement("style");
-  document.head.appendChild(stylesheetElement);
+  const element = document.createElement("style");
+  document.head.appendChild(element);
 
-  return stylesheetElement;
+  return element;
 };
 
 const getStylesheet: GetStylesheet = (element) => {
@@ -20,21 +20,19 @@ const getStylesheet: GetStylesheet = (element) => {
   }
 };
 
-const getSheetIndex: GetSheetIndex = (stylesheetElement) => {
-  let stylesheetIndex = -1;
-  if (stylesheetElement === undefined) {
-    return stylesheetIndex;
-  }
-
-  const children = document.head.children;
-  while (stylesheetIndex < children.length) {
-    stylesheetIndex += 1;
-    if (children[stylesheetIndex] === stylesheetElement) {
-      break;
+const getSheetIndex: GetSheetIndex = (element) => {
+  let sheetIndex = -1;
+  if (element !== undefined) {
+    const children = document.head.children;
+    while (sheetIndex < children.length) {
+      sheetIndex += 1;
+      if (children[sheetIndex] === element) {
+        break;
+      }
     }
   }
 
-  return stylesheetIndex;
+  return sheetIndex;
 };
 
 const stylesheetElement = getStylesheetElement();

@@ -1,26 +1,25 @@
 const getStylesheetElement = ()=>{
-    const stylesheetElement = document.createElement("style");
-    document.head.appendChild(stylesheetElement);
-    return stylesheetElement;
+    const element = document.createElement("style");
+    document.head.appendChild(element);
+    return element;
 };
 const getStylesheet = (element)=>{
     if (element !== undefined && element.sheet) {
         return element.sheet;
     }
 };
-const getSheetIndex = (stylesheetElement)=>{
-    let stylesheetIndex = -1;
-    if (stylesheetElement === undefined) {
-        return stylesheetIndex;
-    }
-    const children = document.head.children;
-    while(stylesheetIndex < children.length){
-        stylesheetIndex += 1;
-        if (children[stylesheetIndex] === stylesheetElement) {
-            break;
+const getSheetIndex = (element)=>{
+    let sheetIndex = -1;
+    if (element !== undefined) {
+        const children = document.head.children;
+        while(sheetIndex < children.length){
+            sheetIndex += 1;
+            if (children[sheetIndex] === element) {
+                break;
+            }
         }
     }
-    return stylesheetIndex;
+    return sheetIndex;
 };
 const stylesheetElement = getStylesheetElement();
 const stylesheet = getStylesheet(stylesheetElement);
@@ -74,23 +73,23 @@ const getID = ()=>{
     return uniqueID;
 };
 const getTemplateAsStr = (templateArray, injections)=>{
-    const requestedStyle = [];
+    const styleIntegrals = [];
     const templateLength = templateArray.length;
     let index = 0;
     while(index < templateLength){
         const templatePiece = templateArray[index];
         const injection = injections[index];
-        requestedStyle.push(templatePiece);
-        requestedStyle.push(injection);
+        styleIntegrals.push(templatePiece);
+        styleIntegrals.push(injection);
         index += 1;
     }
     const templatePiece = templateArray[index];
-    requestedStyle.push(templatePiece);
-    return requestedStyle.join("");
+    styleIntegrals.push(templatePiece);
+    return styleIntegrals.join("");
 };
 const appendStyleToStylesheet = (style)=>{
     if (stylesheet !== undefined) {
-        stylesheet.insertRule(style, stylesheet.cssRules.length);
+        stylesheet.insertRule(style);
     }
 };
 const style = (templateArray, ...injections)=>{

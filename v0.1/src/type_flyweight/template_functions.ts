@@ -40,6 +40,5 @@ export type {
   GetMediaQuery,
   GetSelector,
   GetTemplate,
-  InjectionValue,
   StyleTemplate,
 };

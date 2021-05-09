@@ -29,7 +29,7 @@ const getID: GetID = () => {
 };
 
 const getTemplateAsStr: GetTemplate = (templateArray, injections) => {
-  const requestedStyle = [];
+  const styleIntegrals = [];
   const templateLength = templateArray.length;
 
   let index = 0;
@@ -37,21 +37,21 @@ const getTemplateAsStr: GetTemplate = (templateArray, injections) => {
     const templatePiece = templateArray[index];
     const injection = injections[index];
 
-    requestedStyle.push(templatePiece);
-    requestedStyle.push(injection);
+    styleIntegrals.push(templatePiece);
+    styleIntegrals.push(injection);
 
     index += 1;
   }
 
   const templatePiece = templateArray[index];
-  requestedStyle.push(templatePiece);
+  styleIntegrals.push(templatePiece);
 
-  return requestedStyle.join("");
+  return styleIntegrals.join("");
 };
 
 const appendStyleToStylesheet: AppendStyleToStylesheet = (style) => {
   if (stylesheet !== undefined) {
-    stylesheet.insertRule(style, stylesheet.cssRules.length);
+    stylesheet.insertRule(style);
   }
 };
 
