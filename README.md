@@ -98,7 +98,8 @@ const flashText = style`
 `;
 ```
 
-The example above creates an animation with `keyframes`, assigns a classname to `fade`, and sets `fade` as the `animation` property in `flashText`.
+The example above creates an animation with `keyframes`, assigns a classname to
+`fade`, and sets `fade` as the `animation` property in `flashText`.
 
 ### Selectors
 
