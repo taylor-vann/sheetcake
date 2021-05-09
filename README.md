@@ -32,12 +32,14 @@ Create a CSS declaration with the `style` function.
 
 ```ts
 const bluebox = style`
-  color: white;
   background-color: blue;
+  color: white;
+  margin: 4px 0;
+  padding: 4px 8px;
 `;
 ```
 
-An optimistically unique classname is assigned to `bluebox` to be referenced in
+A classname is assigned to `bluebox` which can be assignegd to
 the `class` attribute of an HTMLElement.
 
 Here is an example of Sheetcake working with LitElement:
@@ -47,8 +49,10 @@ import { style } from "../sheetcake";
 import { LitElement } from "../lit-element";
 
 const bluebox = style`
-  color: white;
   background-color: blue;
+  color: white;
+  margin: 4px 0;
+  padding: 4px 8px;
 `;
 
 class MyElement extends LitElement {
@@ -62,21 +66,22 @@ class MyElement extends LitElement {
 
 Parts of CSS declarations can be isolated as _fragments_ and reused later.
 
+The class `bluebox` in the example above could be refactored with fragments like the example below.
+
 ```ts
-const borders = `
-  border: 1px solid #efefef;
+const colors = `
+  background-color: blue;
+  color: white;
 `;
 
-const mediumTile = `
-  height: 128px;
-  width: 128px;
+const spacing = `
+  margin: 4px 0;
+  padding: 4px 8px;
 `;
 
 const bluebox = style`
-  ${borders}
-  ${mediumTile}
-  color: white;
-  background-color: blue;
+  ${colors}
+  ${spacing}
 `;
 ```
 
