@@ -1,7 +1,6 @@
 import { stylesheet } from "../sheet/sheet.ts";
 
 import {
-  appendStyleToStylesheet,
   createAttributeSelector,
   createMediaQuery,
   createSelector,
@@ -26,7 +25,7 @@ const optimistIsOptimistic = () => {
   const assertions = [];
 
   if (optimist.length < 2) {
-    assertions.push("optimist should have a length of 2");
+    assertions.push("optimist should have a length of at least 2");
   }
 
   return assertions;
@@ -46,44 +45,28 @@ const testGetId = () => {
   return assertions;
 };
 
-const testAppendStyleToStylesheet = () => {
-  const assertions = [];
-
-  if (stylesheet === undefined) {
-    assertions.push("stylesheet should be defined");
-    return assertions;
-  }
-
-  const styleCount = stylesheet.cssRules.length;
-
-  appendStyleToStylesheet(`
-    .hello_world {
-      color: blue;
-    }
-  `);
-
-  if (styleCount + 1 !== stylesheet.cssRules.length) {
-    assertions.push("stylesheet length should have increased by 1.");
-  }
-
-  return assertions;
-};
-
 const testStyle = () => {
   const assertions = [];
 
   if (stylesheet === undefined) {
-    assertions.push("stylesheet should be defined");
+    assertions.push("stylesheet should not be undefined");
     return assertions;
   }
 
   const styleCount = stylesheet.cssRules.length;
+
   style`
     color: blue;
   `;
 
-  if (styleCount + 1 !== stylesheet.cssRules.length) {
-    assertions.push("stylesheet length should have increased by 1.");
+  const computedStyle = stylesheet.cssRules[styleCount] as CSSStyleRule;
+  if (computedStyle === undefined) {
+    assertions.push("computed style should not be undefined");
+    return assertions;
+  }
+
+  if (computedStyle.style.color !== "blue") {
+    assertions.push("color should be blue.");
   }
 
   return assertions;
@@ -93,7 +76,7 @@ const testKeyframe = () => {
   const assertions = [];
 
   if (stylesheet === undefined) {
-    assertions.push("stylesheet should be defined");
+    assertions.push("stylesheet should not be undefined");
     return assertions;
   }
 
@@ -106,6 +89,25 @@ const testKeyframe = () => {
 
   if (styleCount + 1 !== stylesheet.cssRules.length) {
     assertions.push("stylesheet length should have increased by 1.");
+  }
+
+  const computedStyles = stylesheet.cssRules[styleCount] as CSSKeyframesRule;
+  if (computedStyles === undefined) {
+    assertions.push("computed style should not be undefined");
+    return assertions;
+  }
+
+  if (computedStyles.cssRules.length !== 3) {
+    assertions.push("rule should have three parts");
+  }
+  if (computedStyles.cssRules[0].cssText !== "0% { opacity: 0; }") {
+    assertions.push("first rule should match '0% { opacity: 0; }'");
+  }
+  if (computedStyles.cssRules[1].cssText !== "50% { opacity: 1; }") {
+    assertions.push("second rule should match '50% { opacity: 1; }'");
+  }
+  if (computedStyles.cssRules[2].cssText !== "100% { opacity: 0; }") {
+    assertions.push("third rule should match '100% { opacity: 0; }'");
   }
 
   return assertions;
@@ -128,7 +130,7 @@ const testCreateSelector = () => {
   const assertions = [];
 
   if (stylesheet === undefined) {
-    assertions.push("stylesheet should be defined");
+    assertions.push("stylesheet should not be undefined");
     return assertions;
   }
 
@@ -136,11 +138,24 @@ const testCreateSelector = () => {
 
   const hover = createSelector("hover");
   hover`
-    color: blue;
+    color: yellow;
   `;
 
   if (styleCount + 1 !== stylesheet.cssRules.length) {
     assertions.push("stylesheet length should have increased by 1.");
+  }
+
+  const computedStyle = stylesheet.cssRules[styleCount] as CSSStyleRule;
+  if (computedStyle === undefined) {
+    assertions.push("computed style should not be undefined");
+    return assertions;
+  }
+
+  if (computedStyle.style.color !== "yellow") {
+    assertions.push("color should be yellow");
+  }
+  if (!computedStyle.selectorText.endsWith(":hover")) {
+    assertions.push("selectorText should end with ':hover'");
   }
 
   return assertions;
@@ -150,7 +165,7 @@ const testCreateMediaQuery = () => {
   const assertions = [];
 
   if (stylesheet === undefined) {
-    assertions.push("stylesheet should be defined");
+    assertions.push("stylesheet should not be undefined");
     return assertions;
   }
 
@@ -158,11 +173,26 @@ const testCreateMediaQuery = () => {
 
   const screen600 = createMediaQuery("screen and (min-width: 600px)");
   screen600`
-    color: blue;
+    color: green;
   `;
 
   if (styleCount + 1 !== stylesheet.cssRules.length) {
     assertions.push("stylesheet length should have increased by 1.");
+  }
+
+  const computedStyle = stylesheet.cssRules[styleCount] as CSSMediaRule;
+  if (computedStyle === undefined) {
+    assertions.push("computed style should not be undefined");
+    return assertions;
+  }
+
+  if (computedStyle.conditionText !== "screen and (min-width: 600px)") {
+    assertions.push("condition text should be 'screen and (min-width: 600px)'");
+  }
+
+  const firstStyle = computedStyle.cssRules[0] as CSSStyleRule;
+  if (firstStyle === undefined || firstStyle.style.color !== "green") {
+    assertions.push("condition text should be 'screen and (min-width: 600px)'");
   }
 
   return assertions;
@@ -172,7 +202,7 @@ const testCreateAttributeSelector = () => {
   const assertions = [];
 
   if (stylesheet === undefined) {
-    assertions.push("stylesheet should be defined");
+    assertions.push("stylesheet should not be undefined");
     return assertions;
   }
 
@@ -180,11 +210,24 @@ const testCreateAttributeSelector = () => {
 
   const inputText = createAttributeSelector(`input="text"`);
   inputText`
-    color: blue;
+    color: purple;
   `;
 
   if (styleCount + 1 !== stylesheet.cssRules.length) {
     assertions.push("stylesheet length should have increased by 1.");
+  }
+
+  const computedStyle = stylesheet.cssRules[styleCount] as CSSStyleRule;
+  if (computedStyle === undefined) {
+    assertions.push("computed style should not be undefined");
+    return assertions;
+  }
+
+  if (!computedStyle.selectorText.endsWith('[input="text"]')) {
+    assertions.push('selectorText should be [input="text"]');
+  }
+  if (computedStyle.style.color !== "purple") {
+    assertions.push("style color should be purple");
   }
 
   return assertions;
@@ -193,7 +236,6 @@ const testCreateAttributeSelector = () => {
 const tests = [
   optimistIsOptimistic,
   testGetId,
-  testAppendStyleToStylesheet,
   testStyle,
   testKeyframe,
   testGetTemplateAsStr,
