@@ -39,8 +39,8 @@ const bluebox = style`
 `;
 ```
 
-A classname is assigned to `bluebox` which can be assignegd to
-the `class` attribute of an HTMLElement.
+A classname is assigned to `bluebox` which can be assignegd to the `class`
+attribute of an HTMLElement.
 
 Here is an example of Sheetcake working with LitElement:
 
@@ -66,7 +66,8 @@ class MyElement extends LitElement {
 
 Parts of CSS declarations can be isolated as _fragments_ and reused later.
 
-The class `bluebox` in the example above could be refactored with fragments like the example below.
+The class `bluebox` in the example above could be refactored with fragments like
+the example below.
 
 ```ts
 const colors = `

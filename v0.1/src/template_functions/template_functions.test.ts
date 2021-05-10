@@ -224,7 +224,7 @@ const testCreateAttributeSelector = () => {
   }
 
   if (!computedStyle.selectorText.endsWith('[input="text"]')) {
-    assertions.push("selectorText should be [input=\"text\"]");
+    assertions.push('selectorText should be [input="text"]');
   }
   if (computedStyle.style.color !== "purple") {
     assertions.push("style color should be purple");
