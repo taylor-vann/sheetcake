@@ -1,4 +1,5 @@
 import {
+  appendStyleToStylesheet,
   getSheetIndex,
   getStylesheet,
   getStylesheetElement,
@@ -45,7 +46,35 @@ const getStylesheetInstance = () => {
   }
 };
 
-const tests = [stylesheetExists, stylesheetIndexExists, getStylesheetInstance];
+const testAppendStyleToStylesheet = () => {
+  const assertions = [];
+
+  if (stylesheet === undefined) {
+    assertions.push("stylesheet should be defined");
+    return assertions;
+  }
+
+  const styleCount = stylesheet.cssRules.length;
+
+  appendStyleToStylesheet(`
+    .hello_world {
+      color: blue;
+    }
+  `);
+
+  if (styleCount + 1 !== stylesheet.cssRules.length) {
+    assertions.push("stylesheet length should have increased by 1.");
+  }
+
+  return assertions;
+};
+
+const tests = [
+  stylesheetExists,
+  stylesheetIndexExists,
+  getStylesheetInstance,
+  testAppendStyleToStylesheet,
+];
 
 const unitTestSheet = {
   title,

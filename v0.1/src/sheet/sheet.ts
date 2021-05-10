@@ -2,6 +2,7 @@
 // sheet
 
 import type {
+  AppendStyleToStylesheet,
   GetSheetIndex,
   GetStylesheet,
   GetStylesheetElement,
@@ -39,7 +40,14 @@ const stylesheetElement = getStylesheetElement();
 const stylesheet = getStylesheet(stylesheetElement);
 const stylesheetIndex = getSheetIndex(stylesheetElement);
 
+const appendStyleToStylesheet: AppendStyleToStylesheet = (style) => {
+  if (stylesheet !== undefined) {
+    stylesheet.insertRule(style, stylesheet.cssRules.length);
+  }
+};
+
 export {
+  appendStyleToStylesheet,
   getSheetIndex,
   getStylesheet,
   getStylesheetElement,

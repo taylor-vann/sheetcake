@@ -2,7 +2,6 @@
 // template functions
 
 import type {
-  AppendStyleToStylesheet,
   CreateQueryTemplate,
   CreateSelectorTemplate,
   GetID,
@@ -12,7 +11,11 @@ import type {
   StyleTemplate,
 } from "../type_flyweight/template_functions.ts";
 
-import { stylesheet, stylesheetIndex } from "../sheet/sheet.ts";
+import {
+  appendStyleToStylesheet,
+  stylesheet,
+  stylesheetIndex,
+} from "../sheet/sheet.ts";
 
 let prefix = "";
 const optimist = Math.floor(Math.random() * 2056).toString(16);
@@ -47,12 +50,6 @@ const getTemplateAsStr: GetTemplate = (templateArray, injections) => {
   styleIntegrals.push(templatePiece);
 
   return styleIntegrals.join("");
-};
-
-const appendStyleToStylesheet: AppendStyleToStylesheet = (style) => {
-  if (stylesheet !== undefined) {
-    stylesheet.insertRule(style);
-  }
 };
 
 const style: StyleTemplate = (templateArray, ...injections) => {
