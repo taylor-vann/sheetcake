@@ -188,7 +188,7 @@ This will create a CSS declaration like the example below:
 Use `setPrefix` to specify more custom identifiers.
 
 ```ts
-import { setPrefix } from "sheetcake";
+import { setPrefix } from "../sheetcake";
 
 setPrefix("SUPER_AWESOME_");
 
