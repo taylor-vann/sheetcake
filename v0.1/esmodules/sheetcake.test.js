@@ -90,7 +90,7 @@ const setPrefix = (updatedPrefix) => {
 };
 const getID = () => {
   const stub = stylesheet?.cssRules.length.toString(16);
-  const uniqueID = `${prefix}${optimist}_${stylesheetIndex}_${stub}`;
+  const uniqueID = `_${prefix}${optimist}_${stylesheetIndex}_${stub}`;
   return uniqueID;
 };
 const getTemplateAsStr = (templateArray, injections) => {
@@ -111,7 +111,7 @@ const getTemplateAsStr = (templateArray, injections) => {
 const style = (templateArray, ...injections) => {
   const id = getID();
   const template = getTemplateAsStr(templateArray, injections);
-  const builtStyle = `._${id} {${template}}`;
+  const builtStyle = `.${id} {${template}}`;
   appendStyleToStylesheet(builtStyle);
   return id;
 };
@@ -125,21 +125,21 @@ const keyframe = (templateArray, ...injections) => {
 const getSelector = ({ selector, templateArray, injections }) => {
   const id = getID();
   const template = getTemplateAsStr(templateArray, injections);
-  const builtStyle = `._${id}:${selector} {${template}}`;
+  const builtStyle = `.${id}:${selector} {${template}}`;
   appendStyleToStylesheet(builtStyle);
   return id;
 };
 const getAttributeSelector = ({ selector, templateArray, injections }) => {
   const id = getID();
   const template = getTemplateAsStr(templateArray, injections);
-  const builtStyle = `._${getID()}[${selector}] {${template}}`;
+  const builtStyle = `.${getID()}[${selector}] {${template}}`;
   appendStyleToStylesheet(builtStyle);
   return id;
 };
 const getMediaQuery = ({ mediaQuery, templateArray, injections }) => {
   const id = getID();
   const template = getTemplateAsStr(templateArray, injections);
-  const builtStyle = `@media ${mediaQuery} {\n    ._${id} {${template}}\n  }`;
+  const builtStyle = `@media ${mediaQuery} {\n    .${id} {${template}}\n  }`;
   appendStyleToStylesheet(builtStyle);
   return id;
 };
