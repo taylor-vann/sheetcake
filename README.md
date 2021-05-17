@@ -1,6 +1,6 @@
 # SheetCake
 
-Dead reckon CSS in JS and TS.
+Maintain CSS across Pin JS and TS.
 
 Unminified and uncompressed < 4 kb
 
@@ -24,13 +24,20 @@ Install sheetcake with `npm`.
 npm install sheetcake
 ```
 
+## What is Sheetcake
+
+Sheetcake shares styles between PWAs and Webcomponents.
+
+(basically, it's the library I wish someone else would make ;_; )
+
 ## How to use
 
 ### Styles
 
-Create a CSS declaration with the `style` function.
+Create a CSS stylesheet called `my-document`, then create a CSS declaration with the `style` function.
 
 ```ts
+queueStylesheet("my-document");
 const bluebox = style`
   background-color: blue;
   color: white;
@@ -39,26 +46,12 @@ const bluebox = style`
 `;
 ```
 
-A classname is assigned to `bluebox` which can be assignegd to the `class`
+A classname is assigned to `bluebox` which can be assigned to the `class`
 attribute of an HTMLElement.
 
-Here is an example of Sheetcake working with LitElement:
-
 ```ts
-import { style } from "../sheetcake";
-import { LitElement } from "../lit-element";
-
-const bluebox = style`
-  background-color: blue;
-  color: white;
-  margin: 4px 0;
-  padding: 4px 8px;
-`;
-
-class MyElement extends LitElement {
-  render() {
-    return html` <div class="${bluebox}">Hello, world!</div> `;
-  }
+const firstParagraph = document.querySelector("p");
+firstParagraph.setAttribute("class", bluebox);
 }
 ```
 
@@ -80,6 +73,7 @@ const spacing = `
   padding: 4px 8px;
 `;
 
+queueStylesheet("document");
 const bluebox = style`
   ${colors}
   ${spacing}
@@ -204,6 +198,43 @@ This will create a CSS declaration like the example below:
 .SUPER_AWESOME_65_7E_22 {
   height: 128px;
   width: 128px;
+}
+```
+
+### Web components
+
+Sheetcake can maintain multiple stylesheets and share styles across documents and shadow roots.
+
+Here is an example of Sheetcake working with LitElement. 
+
+```ts
+import { style, setStylesheet, attachStylesheet } from "../sheetcake";
+import { LitElement } from "../lit-element";
+
+queueStylesheet("my-element");
+const bluebox = style`
+  background-color: blue;
+  color: white;
+  margin: 4px 0;
+  padding: 4px 8px;
+`;
+
+queueStylesheet("typography");
+const monobox = style`
+  font-family: monospace;
+`;
+
+const elementStyles = getStylesheetText("my-element");
+const typographyStyles = getStylesheetText("my-element");
+
+class MyElement extends LitElement {
+  static get styles() {
+    return [css([elementStyles, typographyStyles])];
+  }
+  
+  render() {
+    return html` <div class="${bluebox} ">Hello, world!</div> `;
+  }
 }
 ```
 

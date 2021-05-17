@@ -11,22 +11,22 @@ import type {
   StyleTemplate,
 } from "../type_flyweight/template_functions.ts";
 
-import {
-  appendStyleToStylesheet,
-  stylesheet,
-  stylesheetIndex,
-} from "../sheet/sheet.ts";
+import { appendStyle, getFocusedStyle, getStub } from "../sheet/sheet.ts";
 
 let prefix = "";
-const optimist = Math.floor(Math.random() * 2056).toString(16);
+const createOptimist = () => Math.floor(Math.random() * 4096).toString(16);
+const optimistA = createOptimist();
+const optimistB = createOptimist();
 
 const setPrefix = (updatedPrefix: string) => {
   prefix = updatedPrefix;
 };
 
 const getID: GetID = () => {
-  const stub = stylesheet?.cssRules.length.toString(16);
-  const uniqueID = `_${prefix}${optimist}_${stylesheetIndex}_${stub}`;
+  const stylesheetName = getFocusedStyle();
+  const stub = getStub().toString(16);
+  const uniqueID =
+    `_${prefix}${stylesheetName}_${stub}_${optimistA}_${optimistB}`;
 
   return uniqueID;
 };
@@ -57,7 +57,7 @@ const style: StyleTemplate = (templateArray, ...injections) => {
   const template = getTemplateAsStr(templateArray, injections);
   const builtStyle = `.${id} {${template}}`;
 
-  appendStyleToStylesheet(builtStyle);
+  appendStyle(builtStyle);
 
   return id;
 };
@@ -67,7 +67,7 @@ const keyframe: StyleTemplate = (templateArray, ...injections) => {
   const template = getTemplateAsStr(templateArray, injections);
   const builtStyle = `@keyframes _${id} {${template}}`;
 
-  appendStyleToStylesheet(builtStyle);
+  appendStyle(builtStyle);
 
   return id;
 };
@@ -77,7 +77,7 @@ const getSelector: GetSelector = ({ selector, templateArray, injections }) => {
   const template = getTemplateAsStr(templateArray, injections);
   const builtStyle = `.${id}:${selector} {${template}}`;
 
-  appendStyleToStylesheet(builtStyle);
+  appendStyle(builtStyle);
 
   return id;
 };
@@ -91,7 +91,7 @@ const getAttributeSelector: GetSelector = ({
   const template = getTemplateAsStr(templateArray, injections);
   const builtStyle = `.${getID()}[${selector}] {${template}}`;
 
-  appendStyleToStylesheet(builtStyle);
+  appendStyle(builtStyle);
 
   return id;
 };
@@ -107,7 +107,7 @@ const getMediaQuery: GetMediaQuery = ({
     .${id} {${template}}
   }`;
 
-  appendStyleToStylesheet(builtStyle);
+  appendStyle(builtStyle);
 
   return id;
 };
@@ -140,14 +140,13 @@ const createMediaQuery: CreateQueryTemplate = (mediaQuery) => {
 };
 
 export {
-  appendStyleToStylesheet,
+  appendStyle,
   createAttributeSelector,
   createMediaQuery,
   createSelector,
   getID,
   getTemplateAsStr,
   keyframe,
-  optimist,
   setPrefix,
   style,
 };

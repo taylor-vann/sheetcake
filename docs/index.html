@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<head>
+  <meta charset="UTF-8" />
+
+  <!-- preload resources -->
+  <link
+    rel="preload"
+    href="favicon.ico"
+    type="image/x-icon"
+    as="image"
+  />
+  <link rel="modulepreload" href="./bundle/demo.js" as="script" />
+
+  <!-- load resources -->
+  <link rel="icon" href="favicon.ico" type="image/x-icon" />
+  <script type="module" src="https://unpkg.com/lit?module"></script>
+
+  <script type="module" src="./bundle/demo.js"></script>
+</head>
+
+<body>
+  <header></header>
+  <main></main>
+  <my-element></my-element>
+  <footer></footer>
+</body>
