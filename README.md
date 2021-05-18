@@ -37,15 +37,10 @@ import {
 } from "../sheetcake";
 ```
 
-First a stylesheet is queued, then styles are added to the queued stylesheet,
-and finally stylsheets can be returned from a store.
-
-This is accomplished with `queueStyleSheet`, `style`, and `getStyleSheet`.
-
 ### Queue a stylesheet
 
-Declare a stylesheet with `queueStyleSheet`. If a stylesheet does not exist, one
-will be created.
+Declare a stylesheet with `queueStyleSheet`. A CSSStyleSheet will be created if
+one does not exist.
 
 ```ts
 queueStyleSheet("my-document");
@@ -53,7 +48,8 @@ queueStyleSheet("my-document");
 
 ### Styles
 
-Create a CSS declaration and append it to the queued stylesheet with `style.
+Create a CSS declaration with `style`. Styles are appended to the queued
+stylesheet.
 
 ```ts
 const bluebox = style`
@@ -63,13 +59,12 @@ const bluebox = style`
 `;
 ```
 
-A classname is assigned to `bluebox` which can be assigned to the `class`
-attribute of an HTMLElement.
+In the example above, a classname is assigned to `bluebox` which can be assigned
+to the `class` attribute of an HTMLElement.
 
 ```ts
 const firstParagraph = document.querySelector("p");
 firstParagraph.setAttribute("class", bluebox);
-}
 ```
 
 #### Notes for the future
@@ -85,7 +80,6 @@ document.adoptedStyleSheets = [documentCSS];
 
 const firstParagraph = document.querySelector("p");
 firstParagraph.setAttribute("class", bluebox);
-}
 ```
 
 ### Web components
@@ -161,9 +155,9 @@ class MyElement extends LitElement {
 ### Fragments
 
 Parts of CSS declarations can be isolated as _fragments_ and reused later.
-Fragments are just strings.
+Fragments are essentially strings.
 
-The class `bluebox` in the example above could be refactored with fragments
+The class `bluebox` in the examples above could be refactored with fragments
 similar to the example below.
 
 ```ts
@@ -200,8 +194,8 @@ const flashText = style`
 `;
 ```
 
-The example above creates an animation with `keyframes` and sets `fade` as the
-`animation` property in `flashText`.
+The example above uses `keyframes` to create an animation and sets `fade` as the
+animation property in `flashText`.
 
 ### Selectors
 
