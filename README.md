@@ -114,9 +114,10 @@ const elementCSS = getStyleSheetText("my-element");
 const typographyCSS = getStyleSheetText("typography");
 
 class MyElement extends LitElement {
-  static get styles() {
-    return [css([elementCSS]), css([typographyCSS])];
-  }
+  static styles = [
+    css([elementCSS]),
+    css([typographyCSS]),
+  ];
 
   render() {
     return html`
