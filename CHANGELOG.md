@@ -9,6 +9,19 @@ Sheetcake repects [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 Minor patches are placed in their own directories. Patches are bucketed into the
 directory of their minor version.
 
+## [0.1.3] - 2021-05-18
+
+### Added
+
+- `sheet::queueStyleSheet` function to queue a stylesheet for editing
+- `sheet::getStyleSheet` function to return a CSSStyleSheet
+- `sheet::getStyleSheetText` function to return a CSSStyleSheet as text
+
+### Changed
+
+- stylesheets must be declared, there is no longer a single stylesheet
+- webcomponents are supported through `sheet::getStyleSheetText`
+
 ## [0.1.1] - 2021-05-08
 
 ### Added
