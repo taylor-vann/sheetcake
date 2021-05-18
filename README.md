@@ -1,8 +1,8 @@
 # SheetCake
 
-Maintain CSS across Pin JS and TS.
+Manage CSS across progressive web apps and webcomponents in JS and TS.
 
-Unminified and uncompressed < 4 kb
+Unminified and uncompressed < 5 kb
 
 ## Install
 
@@ -13,7 +13,7 @@ Clone Sheetcake into a codebase.
 Import `v0.1` into a deno project.
 
 ```ts
-import { style } from "https://raw.githubusercontent.com/taylor-vann/sheetcake/main/v0.1/src/sheetcake.ts";
+import { queueStyleSheet } from "https://raw.githubusercontent.com/taylor-vann/sheetcake/main/v0.1/src/sheetcake.ts";
 ```
 
 #### Nodejs
@@ -24,24 +24,41 @@ Install sheetcake with `npm`.
 npm install sheetcake
 ```
 
-## What is Sheetcake
-
-Sheetcake shares styles between PWAs and Webcomponents.
-
-(basically, it's the library I wish someone else would make ;_; )
-
 ## How to use
+
+Here are the most common functions in Sheetcake.
+
+```ts
+import {
+  getStyleSheet,
+  getStyleSheetText,
+  queueStyleSheet,
+  style,
+} from "../sheetcake";
+```
+
+First a stylesheet is queued, then styles are added to the queued stylesheet,
+and finally stylsheets can be returned from a store.
+
+This is accomplished with `queueStyleSheet`, `style`, and `getStyleSheet`.
+
+### Queue a stylesheet
+
+Declare a stylesheet with `queueStyleSheet`. If a stylesheet does not exist, one
+will be created.
+
+```ts
+queueStyleSheet("my-document");
+```
 
 ### Styles
 
-Create a CSS stylesheet called `my-document`, then create a CSS declaration with the `style` function.
+Create a CSS declaration and append it to the queued stylesheet with `style.
 
 ```ts
-queueStylesheet("my-document");
 const bluebox = style`
   background-color: blue;
   color: white;
-  margin: 4px 0;
   padding: 4px 8px;
 `;
 ```
@@ -55,12 +72,96 @@ firstParagraph.setAttribute("class", bluebox);
 }
 ```
 
+#### Notes for the future
+
+Sheetcake will support constructable stylesheets as they become more widely
+adopted.
+
+The suggested syntax will become:
+
+```ts
+const documentCSS = getStyleSheet("my-document");
+document.adoptedStyleSheets = [documentCSS];
+
+const firstParagraph = document.querySelector("p");
+firstParagraph.setAttribute("class", bluebox);
+}
+```
+
+### Web components
+
+Share styles across the document and shadow roots.
+
+Here is an example of Sheetcake working with LitElement.
+
+```ts
+import { attachStylesheet, setStylesheet, style } from "../sheetcake";
+import { LitElement } from "../lit-element";
+
+queueStyleSheet("my-element");
+const bluebox = style`
+  background-color: blue;
+  color: white;
+  padding: 4px 8px;
+`;
+
+queueStyleSheet("typography");
+const monobox = style`
+  font-family: monospace;
+`;
+
+const elementCSS = getStyleSheetText("my-element");
+const typographyCSS = getStyleSheetText("typography");
+
+class MyElement extends LitElement {
+  static get styles() {
+    return [css([elementCSS]), css([typographyCSS])];
+  }
+
+  render() {
+    return html`
+      <div class="${bluebox} ${monobox}">
+        Hello, world!
+      </div>`;
+  }
+}
+```
+
+#### Notes for the future
+
+Sheetcake will support constructable stylesheets as they become more widely
+adopted.
+
+The suggested syntax will become:
+
+```ts
+const documentCSS = getStyleSheet("my-element");
+const typographyCSS = getStyleSheet("typography");
+
+class MyElement extends LitElement {
+  constructor() {
+    super();
+    this.shadowRoot.adoptedStylesheets = [
+      documentCSS,
+      typographyCSS,
+    ];
+  }
+
+  render() {
+    return html`
+      <div class="${bluebox} ${monobox}">
+        Hello, world!
+      </div>`;
+  }
+}
+```
+
 ### Fragments
 
 Parts of CSS declarations can be isolated as _fragments_ and reused later.
+Fragments are just strings.
 
-The class `bluebox` in the example above could be refactored with fragments like
-the example below.
+The class `bluebox` in the example above could be refactored with fragments similar to the example below.
 
 ```ts
 const colors = `
@@ -69,11 +170,9 @@ const colors = `
 `;
 
 const spacing = `
-  margin: 4px 0;
   padding: 4px 8px;
 `;
 
-queueStylesheet("document");
 const bluebox = style`
   ${colors}
   ${spacing}
@@ -98,8 +197,7 @@ const flashText = style`
 `;
 ```
 
-The example above creates an animation with `keyframes`, assigns a classname to
-`fade`, and sets `fade` as the `animation` property in `flashText`.
+The example above creates an animation with `keyframes` and sets `fade` as the `animation` property in `flashText`.
 
 ### Selectors
 
@@ -198,43 +296,6 @@ This will create a CSS declaration like the example below:
 .SUPER_AWESOME_65_7E_22 {
   height: 128px;
   width: 128px;
-}
-```
-
-### Web components
-
-Sheetcake can maintain multiple stylesheets and share styles across documents and shadow roots.
-
-Here is an example of Sheetcake working with LitElement. 
-
-```ts
-import { style, setStylesheet, attachStylesheet } from "../sheetcake";
-import { LitElement } from "../lit-element";
-
-queueStylesheet("my-element");
-const bluebox = style`
-  background-color: blue;
-  color: white;
-  margin: 4px 0;
-  padding: 4px 8px;
-`;
-
-queueStylesheet("typography");
-const monobox = style`
-  font-family: monospace;
-`;
-
-const elementStyles = getStylesheetText("my-element");
-const typographyStyles = getStylesheetText("my-element");
-
-class MyElement extends LitElement {
-  static get styles() {
-    return [css([elementStyles, typographyStyles])];
-  }
-  
-  render() {
-    return html` <div class="${bluebox} ">Hello, world!</div> `;
-  }
 }
 ```
 

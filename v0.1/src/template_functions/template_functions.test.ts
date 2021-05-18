@@ -1,4 +1,4 @@
-import { queueStylesheet } from "../sheet/sheet.ts";
+import { queueStyleSheet } from "../sheet/sheet.ts";
 
 import {
   createAttributeSelector,
@@ -37,7 +37,7 @@ const testGetId = () => {
 const testStyle = () => {
   const assertions = [];
 
-  const stylesheet = queueStylesheet("test");
+  const stylesheet = queueStyleSheet("test");
   if (stylesheet === undefined) {
     assertions.push("stylesheet should not be undefined");
     return assertions;
@@ -64,7 +64,7 @@ const testStyle = () => {
 const testKeyframe = () => {
   const assertions = [];
 
-  const stylesheet = queueStylesheet("test");
+  const stylesheet = queueStyleSheet("test");
   if (stylesheet === undefined) {
     assertions.push("stylesheet should not be undefined");
     return assertions;
@@ -119,7 +119,7 @@ const testGetTemplateAsStr = () => {
 const testCreateSelector = () => {
   const assertions = [];
 
-  const stylesheet = queueStylesheet("test");
+  const stylesheet = queueStyleSheet("test");
   if (stylesheet === undefined) {
     assertions.push("stylesheet should not be undefined");
     return assertions;
@@ -155,7 +155,7 @@ const testCreateSelector = () => {
 const testCreateMediaQuery = () => {
   const assertions = [];
 
-  const stylesheet = queueStylesheet("test");
+  const stylesheet = queueStyleSheet("test");
   if (stylesheet === undefined) {
     assertions.push("stylesheet should not be undefined");
     return assertions;
@@ -193,7 +193,7 @@ const testCreateMediaQuery = () => {
 const testCreateAttributeSelector = () => {
   const assertions = [];
 
-  const stylesheet = queueStylesheet("test");
+  const stylesheet = queueStyleSheet("test");
   if (stylesheet === undefined) {
     assertions.push("stylesheet should not be undefined");
     return assertions;

@@ -2,7 +2,7 @@
 // sheets types
 
 interface StyleRecordChunk {
-  stylesheet?: CSSStyleSheet;
+  styleSheet: CSSStyleSheet;
   rules: string[];
 }
 type StyleRecord = Record<string, StyleRecordChunk>;
@@ -10,23 +10,22 @@ type StyleRecord = Record<string, StyleRecordChunk>;
 type AppendStyle = (style: string) => void;
 type GetRecord = () => StyleRecord;
 type GetFocusedStyle = () => string;
-type ConstructStylesheet = () => CSSStyleSheet | undefined;
-
-type GetStylesheet = (name: string) => CSSStyleSheet | undefined;
+type ConstructStyleSheet = () => CSSStyleSheet | undefined;
+type GetStyleSheet = (name: string) => CSSStyleSheet | undefined;
 type GetStyleText = (name: string) => string | undefined;
-type QueueStylesheet = GetStylesheet;
+type QueueStyleSheet = GetStyleSheet;
 type GetStub = () => number;
 type AddStyles = (sheet: CSSStyleSheet, rules: string[]) => void;
 
 export type {
   AddStyles,
   AppendStyle,
-  ConstructStylesheet,
+  ConstructStyleSheet,
   GetFocusedStyle,
   GetRecord,
   GetStub,
-  GetStylesheet,
+  GetStyleSheet,
   GetStyleText,
-  QueueStylesheet,
+  QueueStyleSheet,
   StyleRecord,
 };

@@ -13,11 +13,11 @@ import type {
 
 import { appendStyle, getFocusedStyle, getStub } from "../sheet/sheet.ts";
 
-let prefix = "";
 const createOptimist = () => Math.floor(Math.random() * 4096).toString(16);
 const optimistA = createOptimist();
 const optimistB = createOptimist();
 
+let prefix = "";
 const setPrefix = (updatedPrefix: string) => {
   prefix = updatedPrefix;
 };

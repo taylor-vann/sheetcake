@@ -1,9 +1,9 @@
 import { compose, draw } from "./deps.ts";
 import {
-  style,
-  queueStylesheet,
   addStylesheet,
   getStylesheetMap,
+  queueStylesheet,
+  style,
 } from "../../v0.1/src/sheetcake.ts";
 
 queueStylesheet("document");

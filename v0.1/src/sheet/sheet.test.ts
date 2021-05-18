@@ -1,36 +1,36 @@
-import { appendStyle, queueStylesheet } from "./sheet.ts";
+import { appendStyle, queueStyleSheet } from "./sheet.ts";
 
 const title = "sheetcake:sheet";
 const runTestsAsynchronously = true;
 
-const stylesheetExists = () => {
+const styleSheetExists = () => {
   const assertions = [];
 
-  const stylesheet = queueStylesheet("test");
-  if (stylesheet === undefined) {
-    assertions.push("stylesheet should be refined.");
+  const styleSheet = queueStyleSheet("test");
+  if (styleSheet === undefined) {
+    assertions.push("styleSheet should be refined.");
   }
 };
 
-const getStylesheetInstance = () => {
+const getStyleSheetInstance = () => {
   const assertions = [];
 
-  const stylesheet = queueStylesheet("test");
-  if (!(stylesheet instanceof CSSStyleSheet)) {
-    assertions.push("stylesheet should be an instance of CSSStyleSheet");
+  const styleSheet = queueStyleSheet("test");
+  if (!(styleSheet instanceof CSSStyleSheet)) {
+    assertions.push("styleSheet should be an instance of CSSStyleSheet");
   }
 };
 
 const testAppendStyle = () => {
   const assertions = [];
 
-  const stylesheet = queueStylesheet("test");
-  if (stylesheet === undefined) {
-    assertions.push("stylesheet should be defined");
+  const styleSheet = queueStyleSheet("test");
+  if (styleSheet === undefined) {
+    assertions.push("styleSheet should be defined");
     return assertions;
   }
 
-  const styleCount = stylesheet.cssRules.length;
+  const styleCount = styleSheet.cssRules.length;
 
   appendStyle(`
     .hello_world {
@@ -38,16 +38,16 @@ const testAppendStyle = () => {
     }
   `);
 
-  if (styleCount + 1 !== stylesheet.cssRules.length) {
-    assertions.push("stylesheet length should have increased by 1.");
+  if (styleCount + 1 !== styleSheet.cssRules.length) {
+    assertions.push("styleSheet length should have increased by 1.");
   }
 
   return assertions;
 };
 
 const tests = [
-  stylesheetExists,
-  getStylesheetInstance,
+  styleSheetExists,
+  getStyleSheetInstance,
   testAppendStyle,
 ];
 

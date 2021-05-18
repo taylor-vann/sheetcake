@@ -1,6 +1,6 @@
 let focusedStyle;
 let stub = -1;
-const styleReocrd = {
+const styleRecord = {
 };
 const getStub = ()=>{
     stub += 1;
@@ -8,7 +8,7 @@ const getStub = ()=>{
 };
 const getFocusedStyle = ()=>focusedStyle
 ;
-const constructStylesheet = ()=>{
+const constructStyleSheet = ()=>{
     const style = document.createElement("style");
     style.appendChild(document.createTextNode(""));
     document.head.appendChild(style);
@@ -16,70 +16,73 @@ const constructStylesheet = ()=>{
         return style.sheet;
     }
 };
-const queueStylesheet = (name)=>{
+const queueStyleSheet = (name)=>{
     focusedStyle = name;
-    let stylesheet = styleReocrd[name]?.stylesheet;
-    if (stylesheet) {
-        return stylesheet;
+    let styleSheet = styleRecord[name]?.styleSheet;
+    if (styleSheet !== undefined) {
+        return styleSheet;
     }
-    stylesheet = constructStylesheet();
-    styleReocrd[name] = {
-        stylesheet,
-        rules: []
-    };
-    return stylesheet;
-};
-const getStylesheet = ()=>{
-    return styleReocrd[focusedStyle]?.stylesheet;
-};
-const getStylesheetText = ()=>{
-    const styleRules = styleReocrd[focusedStyle];
-    if (styleRules === undefined) {
+    styleSheet = constructStyleSheet();
+    if (styleSheet === undefined) {
         return;
     }
-    return styleRules.rules.join("\n");
+    styleRecord[name] = {
+        styleSheet,
+        rules: []
+    };
+    return styleSheet;
 };
-const appendStyle = (style)=>{
-    const styleChunk = styleReocrd[focusedStyle];
+const getStyleSheet = (name)=>{
+    return styleRecord[name]?.styleSheet;
+};
+const getStyleSheetText = (name)=>{
+    const styleChunk = styleRecord[name];
     if (styleChunk === undefined) {
         return;
     }
-    const { stylesheet , rules  } = styleChunk;
-    stylesheet?.insertRule(style, rules.length);
+    return styleChunk.rules.join("\n");
+};
+const appendStyle = (style)=>{
+    const styleChunk = styleRecord[focusedStyle];
+    if (styleChunk === undefined) {
+        return;
+    }
+    const { styleSheet , rules  } = styleChunk;
+    styleSheet.insertRule(style, rules.length);
     rules.push(style);
 };
 const title = "sheetcake:sheet";
-const stylesheetExists = ()=>{
+const styleSheetExists = ()=>{
     const assertions = [];
-    const stylesheet = queueStylesheet("test");
-    if (stylesheet === undefined) {
-        assertions.push("stylesheet should be refined.");
+    const styleSheet = queueStyleSheet("test");
+    if (styleSheet === undefined) {
+        assertions.push("styleSheet should be refined.");
     }
 };
-const getStylesheetInstance = ()=>{
+const getStyleSheetInstance = ()=>{
     const assertions = [];
-    const stylesheet = queueStylesheet("test");
-    if (!(stylesheet instanceof CSSStyleSheet)) {
-        assertions.push("stylesheet should be an instance of CSSStyleSheet");
+    const styleSheet = queueStyleSheet("test");
+    if (!(styleSheet instanceof CSSStyleSheet)) {
+        assertions.push("styleSheet should be an instance of CSSStyleSheet");
     }
 };
 const testAppendStyle = ()=>{
     const assertions = [];
-    const stylesheet = queueStylesheet("test");
-    if (stylesheet === undefined) {
-        assertions.push("stylesheet should be defined");
+    const styleSheet = queueStyleSheet("test");
+    if (styleSheet === undefined) {
+        assertions.push("styleSheet should be defined");
         return assertions;
     }
-    const styleCount = stylesheet.cssRules.length;
+    const styleCount = styleSheet.cssRules.length;
     appendStyle(`\n    .hello_world {\n      color: blue;\n    }\n  `);
-    if (styleCount + 1 !== stylesheet.cssRules.length) {
-        assertions.push("stylesheet length should have increased by 1.");
+    if (styleCount + 1 !== styleSheet.cssRules.length) {
+        assertions.push("styleSheet length should have increased by 1.");
     }
     return assertions;
 };
 const tests3 = [
-    stylesheetExists,
-    getStylesheetInstance,
+    styleSheetExists,
+    getStyleSheetInstance,
     testAppendStyle, 
 ];
 const unitTestSheet = {
@@ -87,11 +90,11 @@ const unitTestSheet = {
     tests: tests3,
     runTestsAsynchronously: true
 };
-let prefix = "";
 const createOptimist = ()=>Math.floor(Math.random() * 4096).toString(16)
 ;
 const optimistA = createOptimist();
 const optimistB = createOptimist();
+let prefix = "";
 const setPrefix = (updatedPrefix)=>{
     prefix = updatedPrefix;
 };
@@ -189,7 +192,7 @@ const testGetId = ()=>{
 };
 const testStyle = ()=>{
     const assertions = [];
-    const stylesheet = queueStylesheet("test");
+    const stylesheet = queueStyleSheet("test");
     if (stylesheet === undefined) {
         assertions.push("stylesheet should not be undefined");
         return assertions;
@@ -208,7 +211,7 @@ const testStyle = ()=>{
 };
 const testKeyframe = ()=>{
     const assertions = [];
-    const stylesheet = queueStylesheet("test");
+    const stylesheet = queueStyleSheet("test");
     if (stylesheet === undefined) {
         assertions.push("stylesheet should not be undefined");
         return assertions;
@@ -251,7 +254,7 @@ const testGetTemplateAsStr = ()=>{
 };
 const testCreateSelector = ()=>{
     const assertions = [];
-    const stylesheet = queueStylesheet("test");
+    const stylesheet = queueStyleSheet("test");
     if (stylesheet === undefined) {
         assertions.push("stylesheet should not be undefined");
         return assertions;
@@ -277,7 +280,7 @@ const testCreateSelector = ()=>{
 };
 const testCreateMediaQuery = ()=>{
     const assertions = [];
-    const stylesheet = queueStylesheet("test");
+    const stylesheet = queueStyleSheet("test");
     if (stylesheet === undefined) {
         assertions.push("stylesheet should not be undefined");
         return assertions;
@@ -304,7 +307,7 @@ const testCreateMediaQuery = ()=>{
 };
 const testCreateAttributeSelector = ()=>{
     const assertions = [];
-    const stylesheet = queueStylesheet("test");
+    const stylesheet = queueStyleSheet("test");
     if (stylesheet === undefined) {
         assertions.push("stylesheet should not be undefined");
         return assertions;

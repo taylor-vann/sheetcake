@@ -3,30 +3,30 @@
 
 import type {
   AppendStyle,
-  ConstructStylesheet,
+  ConstructStyleSheet,
   GetFocusedStyle,
   GetRecord,
   GetStub,
-  GetStylesheet,
+  GetStyleSheet,
   GetStyleText,
-  QueueStylesheet,
+  QueueStyleSheet,
   StyleRecord,
 } from "../type_flyweight/sheet.ts";
 
 let focusedStyle: string;
 let stub = -1;
-const styleReocrd: StyleRecord = {};
+const styleRecord: StyleRecord = {};
 
 const getStub: GetStub = () => {
   stub += 1;
   return stub;
 };
 
-const getStyleRecord: GetRecord = () => styleReocrd;
+const getStyleRecord: GetRecord = () => styleRecord;
 const getFocusedStyle: GetFocusedStyle = () => focusedStyle;
 
-const constructStylesheet: ConstructStylesheet = () => {
-  // TODO: when constructable stylesheets lands, no longer necessary.
+const constructStyleSheet: ConstructStyleSheet = () => {
+  // TODO: when constructable styleSheets lands, no longer necessary.
   const style = document.createElement("style");
   style.appendChild(document.createTextNode(""));
   document.head.appendChild(style);
@@ -36,42 +36,47 @@ const constructStylesheet: ConstructStylesheet = () => {
   }
 };
 
-const queueStylesheet: QueueStylesheet = (name) => {
+const queueStyleSheet: QueueStyleSheet = (name) => {
   focusedStyle = name;
 
-  let stylesheet = styleReocrd[name]?.stylesheet;
-  if (stylesheet) {
-    return stylesheet;
+  let styleSheet: CSSStyleSheet | undefined = styleRecord[name]?.styleSheet;
+  if (styleSheet !== undefined) {
+    return styleSheet;
   }
 
-  stylesheet = constructStylesheet();
-  styleReocrd[name] = { stylesheet, rules: [] };
-
-  return stylesheet;
-};
-
-const getStylesheet: GetStylesheet = () => {
-  return styleReocrd[focusedStyle]?.stylesheet;
-};
-
-const getStylesheetText: GetStyleText = () => {
-  const styleRules = styleReocrd[focusedStyle];
-  if (styleRules === undefined) {
+  styleSheet = constructStyleSheet();
+  if (styleSheet === undefined) {
     return;
   }
 
-  return styleRules.rules.join("\n");
+  styleRecord[name] = { styleSheet, rules: [] };
+
+  return styleSheet;
 };
 
-const appendStyle: AppendStyle = (style) => {
-  const styleChunk = styleReocrd[focusedStyle];
+const getStyleSheet: GetStyleSheet = (name) => {
+  return styleRecord[name]?.styleSheet;
+};
+
+const getStyleSheetText: GetStyleText = (name) => {
+  const styleChunk = styleRecord[name];
   if (styleChunk === undefined) {
     return;
   }
 
-  const { stylesheet, rules } = styleChunk;
+  return styleChunk.rules.join("\n");
+};
 
-  stylesheet?.insertRule(style, rules.length);
+const appendStyle: AppendStyle = (style) => {
+  const styleChunk = styleRecord[focusedStyle];
+
+  if (styleChunk === undefined) {
+    return;
+  }
+
+  const { styleSheet, rules } = styleChunk;
+
+  styleSheet.insertRule(style, rules.length);
   rules.push(style);
 };
 
@@ -80,7 +85,7 @@ export {
   getFocusedStyle,
   getStub,
   getStyleRecord,
-  getStylesheet,
-  getStylesheetText,
-  queueStylesheet,
+  getStyleSheet,
+  getStyleSheetText,
+  queueStyleSheet,
 };

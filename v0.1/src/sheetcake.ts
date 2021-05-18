@@ -13,7 +13,7 @@ export {
 export {
   getFocusedStyle,
   getStyleRecord,
-  getStylesheet,
-  getStylesheetText,
-  queueStylesheet,
+  getStyleSheet,
+  getStyleSheetText,
+  queueStyleSheet,
 } from "./sheet/sheet.ts";

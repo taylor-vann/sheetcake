@@ -1,16 +1,16 @@
 let focusedStyle;
 let stub = -1;
-const styleReocrd = {
+const styleRecord = {
 };
 const getStub = ()=>{
     stub += 1;
     return stub;
 };
-const getStyleRecord1 = ()=>styleReocrd
+const getStyleRecord1 = ()=>styleRecord
 ;
 const getFocusedStyle1 = ()=>focusedStyle
 ;
-const constructStylesheet = ()=>{
+const constructStyleSheet = ()=>{
     const style = document.createElement("style");
     style.appendChild(document.createTextNode(""));
     document.head.appendChild(style);
@@ -18,43 +18,46 @@ const constructStylesheet = ()=>{
         return style.sheet;
     }
 };
-const queueStylesheet1 = (name)=>{
+const queueStyleSheet1 = (name)=>{
     focusedStyle = name;
-    let stylesheet = styleReocrd[name]?.stylesheet;
-    if (stylesheet) {
-        return stylesheet;
+    let styleSheet = styleRecord[name]?.styleSheet;
+    if (styleSheet !== undefined) {
+        return styleSheet;
     }
-    stylesheet = constructStylesheet();
-    styleReocrd[name] = {
-        stylesheet,
-        rules: []
-    };
-    return stylesheet;
-};
-const getStylesheet1 = ()=>{
-    return styleReocrd[focusedStyle]?.stylesheet;
-};
-const getStylesheetText1 = ()=>{
-    const styleRules = styleReocrd[focusedStyle];
-    if (styleRules === undefined) {
+    styleSheet = constructStyleSheet();
+    if (styleSheet === undefined) {
         return;
     }
-    return styleRules.rules.join("\n");
+    styleRecord[name] = {
+        styleSheet,
+        rules: []
+    };
+    return styleSheet;
 };
-const appendStyle = (style)=>{
-    const styleChunk = styleReocrd[focusedStyle];
+const getStyleSheet1 = (name)=>{
+    return styleRecord[name]?.styleSheet;
+};
+const getStyleSheetText1 = (name)=>{
+    const styleChunk = styleRecord[name];
     if (styleChunk === undefined) {
         return;
     }
-    const { stylesheet , rules  } = styleChunk;
-    stylesheet?.insertRule(style, rules.length);
+    return styleChunk.rules.join("\n");
+};
+const appendStyle = (style)=>{
+    const styleChunk = styleRecord[focusedStyle];
+    if (styleChunk === undefined) {
+        return;
+    }
+    const { styleSheet , rules  } = styleChunk;
+    styleSheet.insertRule(style, rules.length);
     rules.push(style);
 };
-let prefix = "";
 const createOptimist = ()=>Math.floor(Math.random() * 4096).toString(16)
 ;
 const optimistA = createOptimist();
 const optimistB = createOptimist();
+let prefix = "";
 const setPrefix1 = (updatedPrefix)=>{
     prefix = updatedPrefix;
 };
@@ -139,4 +142,4 @@ const createMediaQuery1 = (mediaQuery)=>{
     ;
 };
 export { createAttributeSelector1 as createAttributeSelector, createMediaQuery1 as createMediaQuery, createSelector1 as createSelector, keyframe1 as keyframe, setPrefix1 as setPrefix, style1 as style };
-export { getFocusedStyle1 as getFocusedStyle, getStyleRecord1 as getStyleRecord, getStylesheet1 as getStylesheet, getStylesheetText1 as getStylesheetText, queueStylesheet1 as queueStylesheet };
+export { getFocusedStyle1 as getFocusedStyle, getStyleRecord1 as getStyleRecord, getStyleSheet1 as getStyleSheet, getStyleSheetText1 as getStyleSheetText, queueStyleSheet1 as queueStyleSheet };
