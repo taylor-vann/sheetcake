@@ -1,352 +1,352 @@
 let focusedStyle;
 let stub = -1;
-const styleRecord = {
+const styleRecord = {};
+const getStub = () => {
+  stub += 1;
+  return stub;
 };
-const getStub = ()=>{
-    stub += 1;
-    return stub;
+const getFocusedStyle = () => focusedStyle;
+const constructStyleSheet = () => {
+  const style = document.createElement("style");
+  style.appendChild(document.createTextNode(""));
+  document.head.appendChild(style);
+  if (style.sheet !== null) {
+    return style.sheet;
+  }
 };
-const getFocusedStyle = ()=>focusedStyle
-;
-const constructStyleSheet = ()=>{
-    const style = document.createElement("style");
-    style.appendChild(document.createTextNode(""));
-    document.head.appendChild(style);
-    if (style.sheet !== null) {
-        return style.sheet;
-    }
-};
-const queueStyleSheet = (name)=>{
-    focusedStyle = name;
-    let styleSheet = styleRecord[name]?.styleSheet;
-    if (styleSheet !== undefined) {
-        return styleSheet;
-    }
-    styleSheet = constructStyleSheet();
-    if (styleSheet === undefined) {
-        return;
-    }
-    styleRecord[name] = {
-        styleSheet,
-        rules: []
-    };
+const queueStyleSheet = (name) => {
+  focusedStyle = name;
+  let styleSheet = styleRecord[name]?.styleSheet;
+  if (styleSheet !== undefined) {
     return styleSheet;
+  }
+  styleSheet = constructStyleSheet();
+  if (styleSheet === undefined) {
+    return;
+  }
+  styleRecord[name] = {
+    styleSheet,
+    rules: [],
+  };
+  return styleSheet;
 };
-const getStyleSheet = (name)=>{
-    return styleRecord[name]?.styleSheet;
+const getStyleSheet = (name) => {
+  return styleRecord[name]?.styleSheet;
 };
-const getStyleSheetText = (name)=>{
-    const styleChunk = styleRecord[name];
-    if (styleChunk === undefined) {
-        return;
-    }
-    return styleChunk.rules.join("\n");
+const getStyleSheetText = (name) => {
+  const styleChunk = styleRecord[name];
+  if (styleChunk === undefined) {
+    return;
+  }
+  return styleChunk.rules.join("\n");
 };
-const appendStyle = (style)=>{
-    const styleChunk = styleRecord[focusedStyle];
-    if (styleChunk === undefined) {
-        return;
-    }
-    const { styleSheet , rules  } = styleChunk;
-    styleSheet.insertRule(style, rules.length);
-    rules.push(style);
+const appendStyle = (style) => {
+  const styleChunk = styleRecord[focusedStyle];
+  if (styleChunk === undefined) {
+    return;
+  }
+  const { styleSheet, rules } = styleChunk;
+  styleSheet.insertRule(style, rules.length);
+  rules.push(style);
 };
 const title = "sheetcake:sheet";
-const styleSheetExists = ()=>{
-    const assertions = [];
-    const styleSheet = queueStyleSheet("test");
-    if (styleSheet === undefined) {
-        assertions.push("styleSheet should be refined.");
-    }
+const styleSheetExists = () => {
+  const assertions = [];
+  const styleSheet = queueStyleSheet("test");
+  if (styleSheet === undefined) {
+    assertions.push("styleSheet should be refined.");
+  }
 };
-const getStyleSheetInstance = ()=>{
-    const assertions = [];
-    const styleSheet = queueStyleSheet("test");
-    if (!(styleSheet instanceof CSSStyleSheet)) {
-        assertions.push("styleSheet should be an instance of CSSStyleSheet");
-    }
+const getStyleSheetInstance = () => {
+  const assertions = [];
+  const styleSheet = queueStyleSheet("test");
+  if (!(styleSheet instanceof CSSStyleSheet)) {
+    assertions.push("styleSheet should be an instance of CSSStyleSheet");
+  }
 };
-const testAppendStyle = ()=>{
-    const assertions = [];
-    const styleSheet = queueStyleSheet("test");
-    if (styleSheet === undefined) {
-        assertions.push("styleSheet should be defined");
-        return assertions;
-    }
-    const styleCount = styleSheet.cssRules.length;
-    appendStyle(`\n    .hello_world {\n      color: blue;\n    }\n  `);
-    if (styleCount + 1 !== styleSheet.cssRules.length) {
-        assertions.push("styleSheet length should have increased by 1.");
-    }
+const testAppendStyle = () => {
+  const assertions = [];
+  const styleSheet = queueStyleSheet("test");
+  if (styleSheet === undefined) {
+    assertions.push("styleSheet should be defined");
     return assertions;
+  }
+  const styleCount = styleSheet.cssRules.length;
+  appendStyle(`\n    .hello_world {\n      color: blue;\n    }\n  `);
+  if (styleCount + 1 !== styleSheet.cssRules.length) {
+    assertions.push("styleSheet length should have increased by 1.");
+  }
+  return assertions;
 };
 const tests3 = [
-    styleSheetExists,
-    getStyleSheetInstance,
-    testAppendStyle, 
+  styleSheetExists,
+  getStyleSheetInstance,
+  testAppendStyle,
 ];
 const unitTestSheet = {
-    title,
-    tests: tests3,
-    runTestsAsynchronously: true
+  title,
+  tests: tests3,
+  runTestsAsynchronously: true,
 };
-const createOptimist = ()=>Math.floor(Math.random() * 4096).toString(16)
-;
+const createOptimist = () => Math.floor(Math.random() * 4096).toString(16);
 const optimistA = createOptimist();
 const optimistB = createOptimist();
 let prefix = "";
-const setPrefix = (updatedPrefix)=>{
-    prefix = updatedPrefix;
+const setPrefix = (updatedPrefix) => {
+  prefix = updatedPrefix;
 };
-const getID = ()=>{
-    const stylesheetName = getFocusedStyle();
-    const stub1 = getStub().toString(16);
-    const uniqueID = `_${prefix}${stylesheetName}_${stub1}_${optimistA}_${optimistB}`;
-    return uniqueID;
+const getID = () => {
+  const stylesheetName = getFocusedStyle();
+  const stub1 = getStub().toString(16);
+  const uniqueID =
+    `_${prefix}${stylesheetName}_${stub1}_${optimistA}_${optimistB}`;
+  return uniqueID;
 };
-const getTemplateAsStr = (templateArray, injections)=>{
-    const styleIntegrals = [];
-    const templateLength = templateArray.length;
-    let index = 0;
-    while(index < templateLength){
-        const templatePiece = templateArray[index];
-        const injection = injections[index];
-        styleIntegrals.push(templatePiece);
-        styleIntegrals.push(injection);
-        index += 1;
-    }
+const getTemplateAsStr = (templateArray, injections) => {
+  const styleIntegrals = [];
+  const templateLength = templateArray.length;
+  let index = 0;
+  while (index < templateLength) {
     const templatePiece = templateArray[index];
+    const injection = injections[index];
     styleIntegrals.push(templatePiece);
-    return styleIntegrals.join("");
+    styleIntegrals.push(injection);
+    index += 1;
+  }
+  const templatePiece = templateArray[index];
+  styleIntegrals.push(templatePiece);
+  return styleIntegrals.join("");
 };
-const style = (templateArray, ...injections)=>{
-    const id = getID();
-    const template = getTemplateAsStr(templateArray, injections);
-    const builtStyle = `.${id} {${template}}`;
-    appendStyle(builtStyle);
-    return id;
+const style = (templateArray, ...injections) => {
+  const id = getID();
+  const template = getTemplateAsStr(templateArray, injections);
+  const builtStyle = `.${id} {${template}}`;
+  appendStyle(builtStyle);
+  return id;
 };
-const keyframe = (templateArray, ...injections)=>{
-    const id = getID();
-    const template = getTemplateAsStr(templateArray, injections);
-    const builtStyle = `@keyframes _${id} {${template}}`;
-    appendStyle(builtStyle);
-    return id;
+const keyframe = (templateArray, ...injections) => {
+  const id = getID();
+  const template = getTemplateAsStr(templateArray, injections);
+  const builtStyle = `@keyframes _${id} {${template}}`;
+  appendStyle(builtStyle);
+  return id;
 };
-const getSelector = ({ selector , templateArray , injections  })=>{
-    const id = getID();
-    const template = getTemplateAsStr(templateArray, injections);
-    const builtStyle = `.${id}:${selector} {${template}}`;
-    appendStyle(builtStyle);
-    return id;
+const getSelector = ({ selector, templateArray, injections }) => {
+  const id = getID();
+  const template = getTemplateAsStr(templateArray, injections);
+  const builtStyle = `.${id}:${selector} {${template}}`;
+  appendStyle(builtStyle);
+  return id;
 };
-const getAttributeSelector = ({ selector , templateArray , injections ,  })=>{
-    const id = getID();
-    const template = getTemplateAsStr(templateArray, injections);
-    const builtStyle = `.${getID()}[${selector}] {${template}}`;
-    appendStyle(builtStyle);
-    return id;
+const getAttributeSelector = ({ selector, templateArray, injections }) => {
+  const id = getID();
+  const template = getTemplateAsStr(templateArray, injections);
+  const builtStyle = `.${getID()}[${selector}] {${template}}`;
+  appendStyle(builtStyle);
+  return id;
 };
-const getMediaQuery = ({ mediaQuery , templateArray , injections ,  })=>{
-    const id = getID();
-    const template = getTemplateAsStr(templateArray, injections);
-    const builtStyle = `@media ${mediaQuery} {\n    .${id} {${template}}\n  }`;
-    appendStyle(builtStyle);
-    return id;
+const getMediaQuery = ({ mediaQuery, templateArray, injections }) => {
+  const id = getID();
+  const template = getTemplateAsStr(templateArray, injections);
+  const builtStyle = `@media ${mediaQuery} {\n    .${id} {${template}}\n  }`;
+  appendStyle(builtStyle);
+  return id;
 };
-const createSelector = (selector)=>{
-    return (templateArray, ...injections)=>getSelector({
-            injections,
-            selector,
-            templateArray
-        })
-    ;
+const createSelector = (selector) => {
+  return (templateArray, ...injections) =>
+    getSelector({
+      injections,
+      selector,
+      templateArray,
+    });
 };
-const createAttributeSelector = (selector)=>{
-    return (templateArray, ...injections)=>getAttributeSelector({
-            injections,
-            selector,
-            templateArray
-        })
-    ;
+const createAttributeSelector = (selector) => {
+  return (templateArray, ...injections) =>
+    getAttributeSelector({
+      injections,
+      selector,
+      templateArray,
+    });
 };
-const createMediaQuery = (mediaQuery)=>{
-    return (templateArray, ...injections)=>getMediaQuery({
-            injections,
-            mediaQuery,
-            templateArray
-        })
-    ;
+const createMediaQuery = (mediaQuery) => {
+  return (templateArray, ...injections) =>
+    getMediaQuery({
+      injections,
+      mediaQuery,
+      templateArray,
+    });
 };
 const title1 = "sheetcake:template_functions";
-const getTemplateArray = (templateArray)=>templateArray
-;
-const testGetId = ()=>{
-    const assertions = [];
-    const id = getID();
-    const idSplit = id.split("_");
-    if (idSplit.length !== 5) {
-        assertions.push("getID should return a three part ID separated by '_' an underscore.");
-    }
-    return assertions;
+const getTemplateArray = (templateArray) => templateArray;
+const testGetId = () => {
+  const assertions = [];
+  const id = getID();
+  const idSplit = id.split("_");
+  if (idSplit.length !== 5) {
+    assertions.push(
+      "getID should return a three part ID separated by '_' an underscore.",
+    );
+  }
+  return assertions;
 };
-const testStyle = ()=>{
-    const assertions = [];
-    const stylesheet = queueStyleSheet("test");
-    if (stylesheet === undefined) {
-        assertions.push("stylesheet should not be undefined");
-        return assertions;
-    }
-    const styleCount = stylesheet.cssRules.length;
-    style`\n    color: blue;\n  `;
-    const computedStyle = stylesheet.cssRules[styleCount];
-    if (computedStyle === undefined) {
-        assertions.push("computed style should not be undefined");
-        return assertions;
-    }
-    if (computedStyle.style.color !== "blue") {
-        assertions.push("color should be blue.");
-    }
+const testStyle = () => {
+  const assertions = [];
+  const stylesheet = queueStyleSheet("test");
+  if (stylesheet === undefined) {
+    assertions.push("stylesheet should not be undefined");
     return assertions;
+  }
+  const styleCount = stylesheet.cssRules.length;
+  style`\n    color: blue;\n  `;
+  const computedStyle = stylesheet.cssRules[styleCount];
+  if (computedStyle === undefined) {
+    assertions.push("computed style should not be undefined");
+    return assertions;
+  }
+  if (computedStyle.style.color !== "blue") {
+    assertions.push("color should be blue.");
+  }
+  return assertions;
 };
-const testKeyframe = ()=>{
-    const assertions = [];
-    const stylesheet = queueStyleSheet("test");
-    if (stylesheet === undefined) {
-        assertions.push("stylesheet should not be undefined");
-        return assertions;
-    }
-    const styleCount = stylesheet.cssRules.length;
-    keyframe`\n    0%   { opacity: 0; }\n    50%  { opacity: 1; }\n    100% { opacity: 0; }\n  `;
-    if (styleCount + 1 !== stylesheet.cssRules.length) {
-        assertions.push("stylesheet length should have increased by 1.");
-    }
-    const computedStyles = stylesheet.cssRules[styleCount];
-    if (computedStyles === undefined) {
-        assertions.push("computed style should not be undefined");
-        return assertions;
-    }
-    if (computedStyles.cssRules.length !== 3) {
-        assertions.push("rule should have three parts");
-    }
-    if (computedStyles.cssRules[0].cssText !== "0% { opacity: 0; }") {
-        assertions.push("first rule should match '0% { opacity: 0; }'");
-    }
-    if (computedStyles.cssRules[1].cssText !== "50% { opacity: 1; }") {
-        assertions.push("second rule should match '50% { opacity: 1; }'");
-    }
-    if (computedStyles.cssRules[2].cssText !== "100% { opacity: 0; }") {
-        assertions.push("third rule should match '100% { opacity: 0; }'");
-    }
+const testKeyframe = () => {
+  const assertions = [];
+  const stylesheet = queueStyleSheet("test");
+  if (stylesheet === undefined) {
+    assertions.push("stylesheet should not be undefined");
     return assertions;
+  }
+  const styleCount = stylesheet.cssRules.length;
+  keyframe
+    `\n    0%   { opacity: 0; }\n    50%  { opacity: 1; }\n    100% { opacity: 0; }\n  `;
+  if (styleCount + 1 !== stylesheet.cssRules.length) {
+    assertions.push("stylesheet length should have increased by 1.");
+  }
+  const computedStyles = stylesheet.cssRules[styleCount];
+  if (computedStyles === undefined) {
+    assertions.push("computed style should not be undefined");
+    return assertions;
+  }
+  if (computedStyles.cssRules.length !== 3) {
+    assertions.push("rule should have three parts");
+  }
+  if (computedStyles.cssRules[0].cssText !== "0% { opacity: 0; }") {
+    assertions.push("first rule should match '0% { opacity: 0; }'");
+  }
+  if (computedStyles.cssRules[1].cssText !== "50% { opacity: 1; }") {
+    assertions.push("second rule should match '50% { opacity: 1; }'");
+  }
+  if (computedStyles.cssRules[2].cssText !== "100% { opacity: 0; }") {
+    assertions.push("third rule should match '100% { opacity: 0; }'");
+  }
+  return assertions;
 };
-const testGetTemplateAsStr = ()=>{
-    const assertions = [];
-    const expectedString = "hello, honeybear, how are you?";
-    const templateArray = getTemplateArray`hello, ${""}, how are you?`;
-    const templateStr = getTemplateAsStr(templateArray, [
-        "honeybear"
-    ]);
-    if (templateStr !== expectedString) {
-        assertions.push("templateStr did not match expectedString");
-    }
-    return assertions;
+const testGetTemplateAsStr = () => {
+  const assertions = [];
+  const expectedString = "hello, honeybear, how are you?";
+  const templateArray = getTemplateArray`hello, ${""}, how are you?`;
+  const templateStr = getTemplateAsStr(templateArray, [
+    "honeybear",
+  ]);
+  if (templateStr !== expectedString) {
+    assertions.push("templateStr did not match expectedString");
+  }
+  return assertions;
 };
-const testCreateSelector = ()=>{
-    const assertions = [];
-    const stylesheet = queueStyleSheet("test");
-    if (stylesheet === undefined) {
-        assertions.push("stylesheet should not be undefined");
-        return assertions;
-    }
-    const styleCount = stylesheet.cssRules.length;
-    const hover = createSelector("hover");
-    hover`\n    color: yellow;\n  `;
-    if (styleCount + 1 !== stylesheet.cssRules.length) {
-        assertions.push("stylesheet length should have increased by 1.");
-    }
-    const computedStyle = stylesheet.cssRules[styleCount];
-    if (computedStyle === undefined) {
-        assertions.push("computed style should not be undefined");
-        return assertions;
-    }
-    if (computedStyle.style.color !== "yellow") {
-        assertions.push("color should be yellow");
-    }
-    if (!computedStyle.selectorText.endsWith(":hover")) {
-        assertions.push("selectorText should end with ':hover'");
-    }
+const testCreateSelector = () => {
+  const assertions = [];
+  const stylesheet = queueStyleSheet("test");
+  if (stylesheet === undefined) {
+    assertions.push("stylesheet should not be undefined");
     return assertions;
+  }
+  const styleCount = stylesheet.cssRules.length;
+  const hover = createSelector("hover");
+  hover`\n    color: yellow;\n  `;
+  if (styleCount + 1 !== stylesheet.cssRules.length) {
+    assertions.push("stylesheet length should have increased by 1.");
+  }
+  const computedStyle = stylesheet.cssRules[styleCount];
+  if (computedStyle === undefined) {
+    assertions.push("computed style should not be undefined");
+    return assertions;
+  }
+  if (computedStyle.style.color !== "yellow") {
+    assertions.push("color should be yellow");
+  }
+  if (!computedStyle.selectorText.endsWith(":hover")) {
+    assertions.push("selectorText should end with ':hover'");
+  }
+  return assertions;
 };
-const testCreateMediaQuery = ()=>{
-    const assertions = [];
-    const stylesheet = queueStyleSheet("test");
-    if (stylesheet === undefined) {
-        assertions.push("stylesheet should not be undefined");
-        return assertions;
-    }
-    const styleCount = stylesheet.cssRules.length;
-    const screen600 = createMediaQuery("screen and (min-width: 600px)");
-    screen600`\n    color: green;\n  `;
-    if (styleCount + 1 !== stylesheet.cssRules.length) {
-        assertions.push("stylesheet length should have increased by 1.");
-    }
-    const computedStyle = stylesheet.cssRules[styleCount];
-    if (computedStyle === undefined) {
-        assertions.push("computed style should not be undefined");
-        return assertions;
-    }
-    if (computedStyle.conditionText !== "screen and (min-width: 600px)") {
-        assertions.push("condition text should be 'screen and (min-width: 600px)'");
-    }
-    const firstStyle = computedStyle.cssRules[0];
-    if (firstStyle === undefined || firstStyle.style.color !== "green") {
-        assertions.push("condition text should be 'screen and (min-width: 600px)'");
-    }
+const testCreateMediaQuery = () => {
+  const assertions = [];
+  const stylesheet = queueStyleSheet("test");
+  if (stylesheet === undefined) {
+    assertions.push("stylesheet should not be undefined");
     return assertions;
+  }
+  const styleCount = stylesheet.cssRules.length;
+  const screen600 = createMediaQuery("screen and (min-width: 600px)");
+  screen600`\n    color: green;\n  `;
+  if (styleCount + 1 !== stylesheet.cssRules.length) {
+    assertions.push("stylesheet length should have increased by 1.");
+  }
+  const computedStyle = stylesheet.cssRules[styleCount];
+  if (computedStyle === undefined) {
+    assertions.push("computed style should not be undefined");
+    return assertions;
+  }
+  if (computedStyle.conditionText !== "screen and (min-width: 600px)") {
+    assertions.push("condition text should be 'screen and (min-width: 600px)'");
+  }
+  const firstStyle = computedStyle.cssRules[0];
+  if (firstStyle === undefined || firstStyle.style.color !== "green") {
+    assertions.push("condition text should be 'screen and (min-width: 600px)'");
+  }
+  return assertions;
 };
-const testCreateAttributeSelector = ()=>{
-    const assertions = [];
-    const stylesheet = queueStyleSheet("test");
-    if (stylesheet === undefined) {
-        assertions.push("stylesheet should not be undefined");
-        return assertions;
-    }
-    const styleCount = stylesheet.cssRules.length;
-    const inputText = createAttributeSelector(`input="text"`);
-    inputText`\n    color: purple;\n  `;
-    if (styleCount + 1 !== stylesheet.cssRules.length) {
-        assertions.push("stylesheet length should have increased by 1.");
-    }
-    const computedStyle = stylesheet.cssRules[styleCount];
-    if (computedStyle === undefined) {
-        assertions.push("computed style should not be undefined");
-        return assertions;
-    }
-    if (!computedStyle.selectorText.endsWith('[input="text"]')) {
-        assertions.push('selectorText should be [input="text"]');
-    }
-    if (computedStyle.style.color !== "purple") {
-        assertions.push("style color should be purple");
-    }
+const testCreateAttributeSelector = () => {
+  const assertions = [];
+  const stylesheet = queueStyleSheet("test");
+  if (stylesheet === undefined) {
+    assertions.push("stylesheet should not be undefined");
     return assertions;
+  }
+  const styleCount = stylesheet.cssRules.length;
+  const inputText = createAttributeSelector(`input="text"`);
+  inputText`\n    color: purple;\n  `;
+  if (styleCount + 1 !== stylesheet.cssRules.length) {
+    assertions.push("stylesheet length should have increased by 1.");
+  }
+  const computedStyle = stylesheet.cssRules[styleCount];
+  if (computedStyle === undefined) {
+    assertions.push("computed style should not be undefined");
+    return assertions;
+  }
+  if (!computedStyle.selectorText.endsWith('[input="text"]')) {
+    assertions.push('selectorText should be [input="text"]');
+  }
+  if (computedStyle.style.color !== "purple") {
+    assertions.push("style color should be purple");
+  }
+  return assertions;
 };
 const tests1 = [
-    testGetId,
-    testStyle,
-    testKeyframe,
-    testGetTemplateAsStr,
-    testCreateSelector,
-    testCreateMediaQuery,
-    testCreateAttributeSelector, 
+  testGetId,
+  testStyle,
+  testKeyframe,
+  testGetTemplateAsStr,
+  testCreateSelector,
+  testCreateMediaQuery,
+  testCreateAttributeSelector,
 ];
 const unitTestTemplateFunctions = {
-    title: title1,
-    tests: tests1,
-    runTestsAsynchronously: true
+  title: title1,
+  tests: tests1,
+  runTestsAsynchronously: true,
 };
 const tests2 = [
-    unitTestSheet,
-    unitTestTemplateFunctions, 
+  unitTestSheet,
+  unitTestTemplateFunctions,
 ];
 export { tests2 as tests };

@@ -95,8 +95,9 @@ Share styles across the document and shadow roots.
 Here is an example of Sheetcake working with LitElement.
 
 ```ts
-import { attachStylesheet, setStylesheet, style } from "../sheetcake";
 import { LitElement } from "../lit-element";
+
+import { getStyleSheetText, queueStyleSheet, style } from "../sheetcake";
 
 queueStyleSheet("my-element");
 const bluebox = style`
@@ -162,7 +163,8 @@ class MyElement extends LitElement {
 Parts of CSS declarations can be isolated as _fragments_ and reused later.
 Fragments are just strings.
 
-The class `bluebox` in the example above could be refactored with fragments similar to the example below.
+The class `bluebox` in the example above could be refactored with fragments
+similar to the example below.
 
 ```ts
 const colors = `
@@ -198,7 +200,8 @@ const flashText = style`
 `;
 ```
 
-The example above creates an animation with `keyframes` and sets `fade` as the `animation` property in `flashText`.
+The example above creates an animation with `keyframes` and sets `fade` as the
+`animation` property in `flashText`.
 
 ### Selectors
 
