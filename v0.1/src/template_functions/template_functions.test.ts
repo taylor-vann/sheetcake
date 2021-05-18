@@ -1,4 +1,4 @@
-import { stylesheet } from "../sheet/sheet.ts";
+import { queueStyleSheet } from "../sheet/sheet.ts";
 
 import {
   createAttributeSelector,
@@ -7,7 +7,6 @@ import {
   getID,
   getTemplateAsStr,
   keyframe,
-  optimist,
   style,
 } from "./template_functions.ts";
 
@@ -21,22 +20,12 @@ const runTestsAsynchronously = true;
 
 const getTemplateArray: GetTemplate = (templateArray) => templateArray;
 
-const optimistIsOptimistic = () => {
-  const assertions = [];
-
-  if (optimist.length < 2) {
-    assertions.push("optimist should have a length of at least 2");
-  }
-
-  return assertions;
-};
-
 const testGetId = () => {
   const assertions = [];
   const id = getID();
   const idSplit = id.split("_");
 
-  if (idSplit.length !== 3) {
+  if (idSplit.length !== 5) {
     assertions.push(
       "getID should return a three part ID separated by '_' an underscore.",
     );
@@ -48,13 +37,13 @@ const testGetId = () => {
 const testStyle = () => {
   const assertions = [];
 
+  const stylesheet = queueStyleSheet("test");
   if (stylesheet === undefined) {
     assertions.push("stylesheet should not be undefined");
     return assertions;
   }
 
   const styleCount = stylesheet.cssRules.length;
-
   style`
     color: blue;
   `;
@@ -75,6 +64,7 @@ const testStyle = () => {
 const testKeyframe = () => {
   const assertions = [];
 
+  const stylesheet = queueStyleSheet("test");
   if (stylesheet === undefined) {
     assertions.push("stylesheet should not be undefined");
     return assertions;
@@ -129,6 +119,7 @@ const testGetTemplateAsStr = () => {
 const testCreateSelector = () => {
   const assertions = [];
 
+  const stylesheet = queueStyleSheet("test");
   if (stylesheet === undefined) {
     assertions.push("stylesheet should not be undefined");
     return assertions;
@@ -164,6 +155,7 @@ const testCreateSelector = () => {
 const testCreateMediaQuery = () => {
   const assertions = [];
 
+  const stylesheet = queueStyleSheet("test");
   if (stylesheet === undefined) {
     assertions.push("stylesheet should not be undefined");
     return assertions;
@@ -201,6 +193,7 @@ const testCreateMediaQuery = () => {
 const testCreateAttributeSelector = () => {
   const assertions = [];
 
+  const stylesheet = queueStyleSheet("test");
   if (stylesheet === undefined) {
     assertions.push("stylesheet should not be undefined");
     return assertions;
@@ -234,7 +227,6 @@ const testCreateAttributeSelector = () => {
 };
 
 const tests = [
-  optimistIsOptimistic,
   testGetId,
   testStyle,
   testKeyframe,

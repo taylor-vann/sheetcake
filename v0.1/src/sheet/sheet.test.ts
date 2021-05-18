@@ -1,79 +1,54 @@
-import {
-  appendStyleToStylesheet,
-  getSheetIndex,
-  getStylesheet,
-  getStylesheetElement,
-  stylesheet,
-  stylesheetIndex,
-} from "./sheet.ts";
+import { appendStyle, queueStyleSheet } from "./sheet.ts";
 
 const title = "sheetcake:sheet";
 const runTestsAsynchronously = true;
 
-const stylesheetExists = () => {
+const styleSheetExists = () => {
   const assertions = [];
 
-  if (stylesheet === undefined) {
-    assertions.push("stylesheet should be refined.");
+  const styleSheet = queueStyleSheet("test");
+  if (styleSheet === undefined) {
+    assertions.push("styleSheet should be refined.");
   }
 };
 
-const stylesheetIndexExists = () => {
+const getStyleSheetInstance = () => {
   const assertions = [];
 
-  if (stylesheetIndex === -1) {
-    assertions.push("stylesheet index be a positive integer.");
+  const styleSheet = queueStyleSheet("test");
+  if (!(styleSheet instanceof CSSStyleSheet)) {
+    assertions.push("styleSheet should be an instance of CSSStyleSheet");
   }
 };
 
-const getStylesheetInstance = () => {
+const testAppendStyle = () => {
   const assertions = [];
 
-  const element = getStylesheetElement();
-
-  if (!(element instanceof Element)) {
-    assertions.push("stylesheet should be an Element");
-  }
-
-  const stylesheet = getStylesheet(element);
-  if (!(stylesheet instanceof CSSStyleSheet)) {
-    assertions.push("stylesheet should be an instance of CSSStyleSheet");
-  }
-
-  const stylesheetIndex = getSheetIndex(element);
-  if (stylesheetIndex === -1) {
-    assertions.push("stylesheet index be a positive integer.");
-  }
-};
-
-const testAppendStyleToStylesheet = () => {
-  const assertions = [];
-
-  if (stylesheet === undefined) {
-    assertions.push("stylesheet should be defined");
+  const styleSheet = queueStyleSheet("test");
+  if (styleSheet === undefined) {
+    assertions.push("styleSheet should be defined");
     return assertions;
   }
 
-  const styleCount = stylesheet.cssRules.length;
+  const styleCount = styleSheet.cssRules.length;
 
-  appendStyleToStylesheet(`
+  appendStyle(`
     .hello_world {
       color: blue;
     }
   `);
 
-  if (styleCount + 1 !== stylesheet.cssRules.length) {
-    assertions.push("stylesheet length should have increased by 1.");
+  if (styleCount + 1 !== styleSheet.cssRules.length) {
+    assertions.push("styleSheet length should have increased by 1.");
   }
 
   return assertions;
 };
 
 const tests = [
-  stylesheetExists,
-  stylesheetIndexExists,
-  getStylesheetInstance,
-  testAppendStyleToStylesheet,
+  styleSheetExists,
+  getStyleSheetInstance,
+  testAppendStyle,
 ];
 
 const unitTestSheet = {
