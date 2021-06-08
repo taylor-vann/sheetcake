@@ -4,26 +4,22 @@
 import type {
   AppendStyle,
   ConstructStyleSheet,
-  GetFocusedStyle,
   GetRecord,
   GetStub,
-  GetStyleSheet,
-  GetStyleText,
-  QueueStyleSheet,
+  GetCSSStyleSheet,
+  GetStylesAsText,
   StyleRecord,
 } from "../type_flyweight/sheet.ts";
 
-let focusedStyle: string;
-let stub = -1;
 const styleRecord: StyleRecord = {};
 
+let stub = -1;
 const getStub: GetStub = () => {
   stub += 1;
   return stub;
 };
 
-const getStyleRecord: GetRecord = () => styleRecord;
-const getFocusedStyle: GetFocusedStyle = () => focusedStyle;
+const getStyleRecord: GetRecord = () => ({ ...styleRecord });
 
 const constructStyleSheet: ConstructStyleSheet = () => {
   // TODO: when constructable styleSheets lands, no longer necessary.
@@ -31,61 +27,52 @@ const constructStyleSheet: ConstructStyleSheet = () => {
   style.appendChild(document.createTextNode(""));
   document.head.appendChild(style);
 
-  if (style.sheet !== null) {
-    return style.sheet;
-  }
+  const sheet = style.sheet ?? undefined;
+  document.head.removeChild(style);
+
+  return sheet;
 };
 
-const queueStyleSheet: QueueStyleSheet = (name) => {
-  focusedStyle = name;
-
-  let styleSheet: CSSStyleSheet | undefined = styleRecord[name]?.styleSheet;
-  if (styleSheet !== undefined) {
-    return styleSheet;
-  }
-
-  styleSheet = constructStyleSheet();
-  if (styleSheet === undefined) {
+const getCSSStyleSheet: GetCSSStyleSheet = (names) => {
+  const sheet = constructStyleSheet();
+  if (sheet === undefined) {
     return;
   }
 
-  styleRecord[name] = { styleSheet, rules: [] };
+  for (const name of names) {
+    const style = styleRecord[name];
+    if (style) {
+      sheet.insertRule(style);
+    }
+  }
 
-  return styleSheet;
+  return sheet;
 };
 
-const getStyleSheet: GetStyleSheet = (name) => {
-  return styleRecord[name]?.styleSheet;
-};
+const getStylesAsText: GetStylesAsText = (names) => {
+  let styles = "";
+  for (const name of names) {
+    const rule = styleRecord[name];
+    if (rule) {
+      styles += rule;
+    }
+  }
 
-const getStyleSheetText: GetStyleText = (name) => {
-  const styleChunk = styleRecord[name];
-  if (styleChunk === undefined) {
+  if (styles === "") {
     return;
   }
 
-  return styleChunk.rules.join("\n");
+  return styles;
 };
 
-const appendStyle: AppendStyle = (style) => {
-  const styleChunk = styleRecord[focusedStyle];
-
-  if (styleChunk === undefined) {
-    return;
-  }
-
-  const { styleSheet, rules } = styleChunk;
-
-  styleSheet.insertRule(style, rules.length);
-  rules.push(style);
+const appendStyle: AppendStyle = (id, style) => {
+  styleRecord[id] = style;
 };
 
 export {
   appendStyle,
-  getFocusedStyle,
   getStub,
   getStyleRecord,
-  getStyleSheet,
-  getStyleSheetText,
-  queueStyleSheet,
+  getCSSStyleSheet,
+  getStylesAsText,
 };

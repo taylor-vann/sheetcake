@@ -11,9 +11,7 @@ export {
 } from "./template_functions/template_functions.ts";
 
 export {
-  getFocusedStyle,
   getStyleRecord,
-  getStyleSheet,
-  getStyleSheetText,
-  queueStyleSheet,
+  getCSSStyleSheet,
+  getStylesAsText,
 } from "./sheet/sheet.ts";

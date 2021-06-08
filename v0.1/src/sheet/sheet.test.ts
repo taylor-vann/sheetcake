@@ -1,44 +1,26 @@
-import { appendStyle, queueStyleSheet } from "./sheet.ts";
+import { appendStyle, getStyleRecord } from "./sheet.ts";
 
 const title = "sheetcake:sheet";
 const runTestsAsynchronously = true;
 
-const styleSheetExists = () => {
-  const assertions = [];
-
-  const styleSheet = queueStyleSheet("test");
-  if (styleSheet === undefined) {
-    assertions.push("styleSheet should be refined.");
-  }
-};
-
-const getStyleSheetInstance = () => {
-  const assertions = [];
-
-  const styleSheet = queueStyleSheet("test");
-  if (!(styleSheet instanceof CSSStyleSheet)) {
-    assertions.push("styleSheet should be an instance of CSSStyleSheet");
-  }
-};
-
 const testAppendStyle = () => {
   const assertions = [];
 
-  const styleSheet = queueStyleSheet("test");
-  if (styleSheet === undefined) {
-    assertions.push("styleSheet should be defined");
-    return assertions;
-  }
-
-  const styleCount = styleSheet.cssRules.length;
-
-  appendStyle(`
+  let styles = getStyleRecord();
+  const styleLength = Object.entries(styles).length;
+  appendStyle(
+    "example",
+    `
     .hello_world {
       color: blue;
     }
-  `);
+  `,
+  );
 
-  if (styleCount + 1 !== styleSheet.cssRules.length) {
+  styles = getStyleRecord();
+  const updatedStyleLength = Object.entries(styles).length;
+
+  if (styleLength + 1 !== updatedStyleLength) {
     assertions.push("styleSheet length should have increased by 1.");
   }
 
@@ -46,8 +28,6 @@ const testAppendStyle = () => {
 };
 
 const tests = [
-  styleSheetExists,
-  getStyleSheetInstance,
   testAppendStyle,
 ];
 

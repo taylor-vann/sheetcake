@@ -1,5 +1,4 @@
-import { queueStyleSheet } from "../sheet/sheet.ts";
-
+import {getStyleRecord} from "../sheet/sheet.ts";
 import {
   createAttributeSelector,
   createMediaQuery,
@@ -37,24 +36,16 @@ const testGetId = () => {
 const testStyle = () => {
   const assertions = [];
 
-  const stylesheet = queueStyleSheet("test");
-  if (stylesheet === undefined) {
-    assertions.push("stylesheet should not be undefined");
-    return assertions;
-  }
-
-  const styleCount = stylesheet.cssRules.length;
+  let styles = getStyleRecord();
+  const styleCount = Object.entries(styles).length;
   style`
     color: blue;
   `;
 
-  const computedStyle = stylesheet.cssRules[styleCount] as CSSStyleRule;
-  if (computedStyle === undefined) {
-    assertions.push("computed style should not be undefined");
-    return assertions;
-  }
 
-  if (computedStyle.style.color !== "blue") {
+  styles = getStyleRecord();
+  const updatedStyleCount = Object.entries(styles).length;
+  if (styleCount + 1 !== updatedStyleCount) {
     assertions.push("color should be blue.");
   }
 
@@ -64,40 +55,18 @@ const testStyle = () => {
 const testKeyframe = () => {
   const assertions = [];
 
-  const stylesheet = queueStyleSheet("test");
-  if (stylesheet === undefined) {
-    assertions.push("stylesheet should not be undefined");
-    return assertions;
-  }
-
-  const styleCount = stylesheet.cssRules.length;
+  let styles = getStyleRecord();
+  const styleCount = Object.entries(styles).length;
   keyframe`
     0%   { opacity: 0; }
     50%  { opacity: 1; }
     100% { opacity: 0; }
   `;
 
-  if (styleCount + 1 !== stylesheet.cssRules.length) {
+  styles = getStyleRecord();
+  const updatedStyleCount = Object.entries(styles).length;
+  if (styleCount + 1 !== updatedStyleCount) {
     assertions.push("stylesheet length should have increased by 1.");
-  }
-
-  const computedStyles = stylesheet.cssRules[styleCount] as CSSKeyframesRule;
-  if (computedStyles === undefined) {
-    assertions.push("computed style should not be undefined");
-    return assertions;
-  }
-
-  if (computedStyles.cssRules.length !== 3) {
-    assertions.push("rule should have three parts");
-  }
-  if (computedStyles.cssRules[0].cssText !== "0% { opacity: 0; }") {
-    assertions.push("first rule should match '0% { opacity: 0; }'");
-  }
-  if (computedStyles.cssRules[1].cssText !== "50% { opacity: 1; }") {
-    assertions.push("second rule should match '50% { opacity: 1; }'");
-  }
-  if (computedStyles.cssRules[2].cssText !== "100% { opacity: 0; }") {
-    assertions.push("third rule should match '100% { opacity: 0; }'");
   }
 
   return assertions;
@@ -119,34 +88,18 @@ const testGetTemplateAsStr = () => {
 const testCreateSelector = () => {
   const assertions = [];
 
-  const stylesheet = queueStyleSheet("test");
-  if (stylesheet === undefined) {
-    assertions.push("stylesheet should not be undefined");
-    return assertions;
-  }
-
-  const styleCount = stylesheet.cssRules.length;
+  let styles = getStyleRecord();
+  const styleCount = Object.entries(styles).length;
 
   const hover = createSelector("hover");
   hover`
     color: yellow;
   `;
 
-  if (styleCount + 1 !== stylesheet.cssRules.length) {
+  styles = getStyleRecord();
+  const updatedStyleCount = Object.entries(styles).length;
+  if (styleCount + 1 !== updatedStyleCount) {
     assertions.push("stylesheet length should have increased by 1.");
-  }
-
-  const computedStyle = stylesheet.cssRules[styleCount] as CSSStyleRule;
-  if (computedStyle === undefined) {
-    assertions.push("computed style should not be undefined");
-    return assertions;
-  }
-
-  if (computedStyle.style.color !== "yellow") {
-    assertions.push("color should be yellow");
-  }
-  if (!computedStyle.selectorText.endsWith(":hover")) {
-    assertions.push("selectorText should end with ':hover'");
   }
 
   return assertions;
@@ -155,36 +108,18 @@ const testCreateSelector = () => {
 const testCreateMediaQuery = () => {
   const assertions = [];
 
-  const stylesheet = queueStyleSheet("test");
-  if (stylesheet === undefined) {
-    assertions.push("stylesheet should not be undefined");
-    return assertions;
-  }
-
-  const styleCount = stylesheet.cssRules.length;
+  let styles = getStyleRecord();
+  const styleCount = Object.entries(styles).length;
 
   const screen600 = createMediaQuery("screen and (min-width: 600px)");
   screen600`
     color: green;
   `;
 
-  if (styleCount + 1 !== stylesheet.cssRules.length) {
+  styles = getStyleRecord();
+  const updatedStyleCount = Object.entries(styles).length;
+  if (styleCount + 1 !== updatedStyleCount) {
     assertions.push("stylesheet length should have increased by 1.");
-  }
-
-  const computedStyle = stylesheet.cssRules[styleCount] as CSSMediaRule;
-  if (computedStyle === undefined) {
-    assertions.push("computed style should not be undefined");
-    return assertions;
-  }
-
-  if (computedStyle.conditionText !== "screen and (min-width: 600px)") {
-    assertions.push("condition text should be 'screen and (min-width: 600px)'");
-  }
-
-  const firstStyle = computedStyle.cssRules[0] as CSSStyleRule;
-  if (firstStyle === undefined || firstStyle.style.color !== "green") {
-    assertions.push("condition text should be 'screen and (min-width: 600px)'");
   }
 
   return assertions;
@@ -193,34 +128,18 @@ const testCreateMediaQuery = () => {
 const testCreateAttributeSelector = () => {
   const assertions = [];
 
-  const stylesheet = queueStyleSheet("test");
-  if (stylesheet === undefined) {
-    assertions.push("stylesheet should not be undefined");
-    return assertions;
-  }
-
-  const styleCount = stylesheet.cssRules.length;
+  let styles = getStyleRecord();
+  const styleCount = Object.entries(styles).length;
 
   const inputText = createAttributeSelector(`input="text"`);
   inputText`
     color: purple;
   `;
 
-  if (styleCount + 1 !== stylesheet.cssRules.length) {
+  styles = getStyleRecord();
+  const updatedStyleCount = Object.entries(styles).length;
+  if (styleCount + 1 !== updatedStyleCount) {
     assertions.push("stylesheet length should have increased by 1.");
-  }
-
-  const computedStyle = stylesheet.cssRules[styleCount] as CSSStyleRule;
-  if (computedStyle === undefined) {
-    assertions.push("computed style should not be undefined");
-    return assertions;
-  }
-
-  if (!computedStyle.selectorText.endsWith('[input="text"]')) {
-    assertions.push('selectorText should be [input="text"]');
-  }
-  if (computedStyle.style.color !== "purple") {
-    assertions.push("style color should be purple");
   }
 
   return assertions;

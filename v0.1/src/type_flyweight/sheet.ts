@@ -1,31 +1,22 @@
 // brian taylor vann
 // sheets types
 
-interface StyleRecordChunk {
-  styleSheet: CSSStyleSheet;
-  rules: string[];
-}
-type StyleRecord = Record<string, StyleRecordChunk>;
-
-type AppendStyle = (style: string) => void;
-type GetRecord = () => StyleRecord;
-type GetFocusedStyle = () => string;
-type ConstructStyleSheet = () => CSSStyleSheet | undefined;
-type GetStyleSheet = (name: string) => CSSStyleSheet | undefined;
-type GetStyleText = (name: string) => string | undefined;
-type QueueStyleSheet = GetStyleSheet;
-type GetStub = () => number;
 type AddStyles = (sheet: CSSStyleSheet, rules: string[]) => void;
+type AppendStyle = (id: string, style: string) => void;
+type ConstructStyleSheet = () => CSSStyleSheet | undefined;
+type GetRecord = () => StyleRecord;
+type GetStub = () => number;
+type GetCSSStyleSheet = (styleNames: string[]) => CSSStyleSheet | undefined;
+type GetStylesAsText = (styleNames: string[]) => string | undefined;
+type StyleRecord = Record<string, string>;
 
 export type {
   AddStyles,
   AppendStyle,
   ConstructStyleSheet,
-  GetFocusedStyle,
   GetRecord,
   GetStub,
-  GetStyleSheet,
-  GetStyleText,
-  QueueStyleSheet,
+  GetCSSStyleSheet,
+  GetStylesAsText,
   StyleRecord,
 };
