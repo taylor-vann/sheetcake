@@ -11,11 +11,11 @@ import type {
   StyleTemplate,
 } from "../type_flyweight/template_functions.ts";
 
-import { appendStyle, getFocusedStyle, getStub } from "../sheet/sheet.ts";
+import { appendStyle, getStub } from "../sheet/sheet.ts";
 
 const createOptimist = () => Math.floor(Math.random() * 4096).toString(16);
-const optimistA = createOptimist();
-const optimistB = createOptimist();
+const optA = createOptimist();
+const optB = createOptimist();
 
 let prefix = "";
 const setPrefix = (updatedPrefix: string) => {
@@ -23,33 +23,31 @@ const setPrefix = (updatedPrefix: string) => {
 };
 
 const getID: GetID = () => {
-  const stylesheetName = getFocusedStyle();
   const stub = getStub().toString(16);
-  const uniqueID =
-    `_${prefix}${stylesheetName}_${stub}_${optimistA}_${optimistB}`;
+  const uniqueID = `_${prefix}_${stub}_${optA}_${optB}`;
 
   return uniqueID;
 };
 
 const getTemplateAsStr: GetTemplate = (templateArray, injections) => {
-  const styleIntegrals = [];
-  const templateLength = templateArray.length;
+  const integrals = [];
+  const length = templateArray.length;
 
   let index = 0;
-  while (index < templateLength) {
-    const templatePiece = templateArray[index];
+  while (index < length) {
+    const chunk = templateArray[index];
     const injection = injections[index];
 
-    styleIntegrals.push(templatePiece);
-    styleIntegrals.push(injection);
+    integrals.push(chunk);
+    integrals.push(injection);
 
     index += 1;
   }
 
-  const templatePiece = templateArray[index];
-  styleIntegrals.push(templatePiece);
+  const chunk = templateArray[index];
+  integrals.push(chunk);
 
-  return styleIntegrals.join("");
+  return integrals.join("");
 };
 
 const style: StyleTemplate = (templateArray, ...injections) => {
@@ -57,7 +55,7 @@ const style: StyleTemplate = (templateArray, ...injections) => {
   const template = getTemplateAsStr(templateArray, injections);
   const builtStyle = `.${id} {${template}}`;
 
-  appendStyle(builtStyle);
+  appendStyle(id, builtStyle);
 
   return id;
 };
@@ -67,7 +65,7 @@ const keyframe: StyleTemplate = (templateArray, ...injections) => {
   const template = getTemplateAsStr(templateArray, injections);
   const builtStyle = `@keyframes _${id} {${template}}`;
 
-  appendStyle(builtStyle);
+  appendStyle(id, builtStyle);
 
   return id;
 };
@@ -77,7 +75,7 @@ const getSelector: GetSelector = ({ selector, templateArray, injections }) => {
   const template = getTemplateAsStr(templateArray, injections);
   const builtStyle = `.${id}:${selector} {${template}}`;
 
-  appendStyle(builtStyle);
+  appendStyle(id, builtStyle);
 
   return id;
 };
@@ -91,7 +89,7 @@ const getAttributeSelector: GetSelector = ({
   const template = getTemplateAsStr(templateArray, injections);
   const builtStyle = `.${getID()}[${selector}] {${template}}`;
 
-  appendStyle(builtStyle);
+  appendStyle(id, builtStyle);
 
   return id;
 };
@@ -107,7 +105,7 @@ const getMediaQuery: GetMediaQuery = ({
     .${id} {${template}}
   }`;
 
-  appendStyle(builtStyle);
+  appendStyle(id, builtStyle);
 
   return id;
 };
