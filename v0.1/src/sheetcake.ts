@@ -10,8 +10,4 @@ export {
   style,
 } from "./template_functions/template_functions.ts";
 
-export {
-  getStyleRecord,
-  getCSSStyleSheet,
-  getStylesAsText,
-} from "./sheet/sheet.ts";
+export { createCSSStyleSheet, createStylesAsText } from "./sheet/sheet.ts";

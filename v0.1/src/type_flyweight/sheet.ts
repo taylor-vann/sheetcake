@@ -4,19 +4,19 @@
 type AddStyles = (sheet: CSSStyleSheet, rules: string[]) => void;
 type AppendStyle = (id: string, style: string) => void;
 type ConstructStyleSheet = () => CSSStyleSheet | undefined;
+type CreateCSSStyleSheet = (styleNames: string[]) => CSSStyleSheet | undefined;
+type CreateStylesAsText = (styleNames: string[]) => string | undefined;
 type GetRecord = () => StyleRecord;
 type GetStub = () => number;
-type GetCSSStyleSheet = (styleNames: string[]) => CSSStyleSheet | undefined;
-type GetStylesAsText = (styleNames: string[]) => string | undefined;
 type StyleRecord = Record<string, string>;
 
 export type {
   AddStyles,
   AppendStyle,
   ConstructStyleSheet,
+  CreateCSSStyleSheet,
+  CreateStylesAsText,
   GetRecord,
   GetStub,
-  GetCSSStyleSheet,
-  GetStylesAsText,
   StyleRecord,
 };

@@ -9,6 +9,19 @@ Sheetcake repects [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 Minor patches are placed in their own directories. Patches are bucketed into the
 directory of their minor version.
 
+## [0.1.4] - 2021-06-07
+
+### Removed
+
+- `sheet::queueStyleSheet`
+- `sheet::getStyleSheet`
+- `sheet::getStyleSheetText` 
+
+### Added
+
+- `sheet::createCSSStyleSheet` - given an array of classnames, return a CSSStyleSheet
+- `sheet::createStyleSheetAsText` given an array of classnames, return text representing a CSS document.
+
 ## [0.1.3] - 2021-05-18
 
 ### Added

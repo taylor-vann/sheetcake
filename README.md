@@ -13,7 +13,7 @@ Clone Sheetcake into a codebase.
 Import `v0.1` into a deno project.
 
 ```ts
-import { queueStyleSheet } from "https://raw.githubusercontent.com/taylor-vann/sheetcake/main/v0.1/src/sheetcake.ts";
+import { style } from "https://raw.githubusercontent.com/taylor-vann/sheetcake/main/v0.1/src/sheetcake.ts";
 ```
 
 #### Nodejs
@@ -30,20 +30,10 @@ Here are the most common functions in Sheetcake.
 
 ```ts
 import {
-  getStyleSheet,
-  getStyleSheetText,
-  queueStyleSheet,
   style,
+  createStylesAsText,
+  createCSSStyleSheet,
 } from "../sheetcake";
-```
-
-### Queue a stylesheet
-
-Declare a stylesheet with `queueStyleSheet`. A CSSStyleSheet will be created if
-one does not exist.
-
-```ts
-queueStyleSheet("my-document");
 ```
 
 ### Styles
@@ -69,13 +59,12 @@ firstParagraph.setAttribute("class", bluebox);
 
 #### Notes for the future
 
-Sheetcake will support constructable stylesheets as they become more widely
-adopted.
+Sheetcake will support constructable stylesheets as they become more widely adopted.
 
 The suggested syntax will become:
 
 ```ts
-const documentCSS = getStyleSheet("my-document");
+const documentCSS = createCSSStyleSheet([bluebox]);
 document.adoptedStyleSheets = [documentCSS];
 
 const firstParagraph = document.querySelector("p");
@@ -93,26 +82,20 @@ import { LitElement } from "../lit-element";
 
 import { getStyleSheetText, queueStyleSheet, style } from "../sheetcake";
 
-queueStyleSheet("my-element");
 const bluebox = style`
   background-color: blue;
   color: white;
   padding: 4px 8px;
 `;
 
-queueStyleSheet("typography");
 const monobox = style`
   font-family: monospace;
 `;
 
-const elementCSS = getStyleSheetText("my-element");
-const typographyCSS = getStyleSheetText("typography");
+const styles = createStylesAsText([bluebox, monobox])
 
 class MyElement extends LitElement {
-  static styles = [
-    css([elementCSS]),
-    css([typographyCSS]),
-  ];
+  static styles = [css([styles])];
 
   render() {
     return html`
@@ -131,16 +114,12 @@ adopted.
 The suggested syntax will become:
 
 ```ts
-const documentCSS = getStyleSheet("my-element");
-const typographyCSS = getStyleSheet("typography");
+const sheet = createCSSStyleSheet([bluebox, monobox])
 
 class MyElement extends LitElement {
   constructor() {
     super();
-    this.shadowRoot.adoptedStylesheets = [
-      documentCSS,
-      typographyCSS,
-    ];
+    this.shadowRoot.adoptedStylesheets.push(sheet)
   }
 
   render() {
@@ -155,7 +134,7 @@ class MyElement extends LitElement {
 ### Fragments
 
 Parts of CSS declarations can be isolated as _fragments_ and reused later.
-Fragments are essentially strings.
+Fragments are strings.
 
 The class `bluebox` in the examples above could be refactored with fragments
 similar to the example below.

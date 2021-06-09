@@ -1,4 +1,4 @@
-import {getStyleRecord} from "../sheet/sheet.ts";
+import { getStyleRecord } from "../sheet/sheet.ts";
 import {
   createAttributeSelector,
   createMediaQuery,
@@ -41,7 +41,6 @@ const testStyle = () => {
   style`
     color: blue;
   `;
-
 
   styles = getStyleRecord();
   const updatedStyleCount = Object.entries(styles).length;

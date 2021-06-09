@@ -17,7 +17,7 @@ const constructStyleSheet = ()=>{
     document.head.removeChild(style);
     return sheet;
 };
-const getCSSStyleSheet = (names)=>{
+const createCSSStyleSheet = (names)=>{
     const sheet = constructStyleSheet();
     if (sheet === undefined) {
         return;
@@ -30,7 +30,7 @@ const getCSSStyleSheet = (names)=>{
     }
     return sheet;
 };
-const getStylesAsText = (names)=>{
+const createStylesAsText = (names)=>{
     let styles = "";
     for (const name of names){
         const rule = styleRecord[name];
@@ -81,19 +81,16 @@ const getID = ()=>{
     return uniqueID;
 };
 const getTemplateAsStr = (templateArray, injections)=>{
-    const integrals = [];
     const length = templateArray.length;
     let index = 0;
-    while(index < length){
-        const chunk = templateArray[index];
-        const injection = injections[index];
-        integrals.push(chunk);
-        integrals.push(injection);
+    let template = "";
+    while(index < length - 1){
+        template += templateArray[index];
+        template += injections[index];
         index += 1;
     }
-    const chunk = templateArray[index];
-    integrals.push(chunk);
-    return integrals.join("");
+    template += templateArray[index];
+    return template;
 };
 const style = (templateArray, ...injections)=>{
     const id = getID();

@@ -2,9 +2,3 @@
 *DS_STORE
 .DS_Store
 ._.DS_Store
-
-## Certs and Keys
-#   Do not save keys, ever
-*.crt
-*.key
-*.pem

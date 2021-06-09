@@ -5,10 +5,6 @@ const getStub = ()=>{
     stub += 1;
     return stub;
 };
-const getStyleRecord1 = ()=>({
-        ...styleRecord
-    })
-;
 const constructStyleSheet = ()=>{
     const style = document.createElement("style");
     style.appendChild(document.createTextNode(""));
@@ -17,7 +13,7 @@ const constructStyleSheet = ()=>{
     document.head.removeChild(style);
     return sheet;
 };
-const getCSSStyleSheet1 = (names)=>{
+const createCSSStyleSheet1 = (names)=>{
     const sheet = constructStyleSheet();
     if (sheet === undefined) {
         return;
@@ -30,7 +26,7 @@ const getCSSStyleSheet1 = (names)=>{
     }
     return sheet;
 };
-const getStylesAsText1 = (names)=>{
+const createStylesAsText1 = (names)=>{
     let styles = "";
     for (const name of names){
         const rule = styleRecord[name];
@@ -60,19 +56,16 @@ const getID = ()=>{
     return uniqueID;
 };
 const getTemplateAsStr = (templateArray, injections)=>{
-    const integrals = [];
     const length = templateArray.length;
     let index = 0;
-    while(index < length){
-        const chunk = templateArray[index];
-        const injection = injections[index];
-        integrals.push(chunk);
-        integrals.push(injection);
+    let template = "";
+    while(index < length - 1){
+        template += templateArray[index];
+        template += injections[index];
         index += 1;
     }
-    const chunk = templateArray[index];
-    integrals.push(chunk);
-    return integrals.join("");
+    template += templateArray[index];
+    return template;
 };
 const style1 = (templateArray, ...injections)=>{
     const id = getID();
@@ -134,4 +127,4 @@ const createMediaQuery1 = (mediaQuery)=>{
     ;
 };
 export { createAttributeSelector1 as createAttributeSelector, createMediaQuery1 as createMediaQuery, createSelector1 as createSelector, keyframe1 as keyframe, setPrefix1 as setPrefix, style1 as style };
-export { getStyleRecord1 as getStyleRecord, getCSSStyleSheet1 as getCSSStyleSheet, getStylesAsText1 as getStylesAsText };
+export { createCSSStyleSheet1 as createCSSStyleSheet, createStylesAsText1 as createStylesAsText };

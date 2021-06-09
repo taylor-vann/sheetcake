@@ -30,24 +30,19 @@ const getID: GetID = () => {
 };
 
 const getTemplateAsStr: GetTemplate = (templateArray, injections) => {
-  const integrals = [];
   const length = templateArray.length;
-
   let index = 0;
-  while (index < length) {
-    const chunk = templateArray[index];
-    const injection = injections[index];
-
-    integrals.push(chunk);
-    integrals.push(injection);
+  let template = "";
+  while (index < length - 1) {
+    template += templateArray[index];
+    template += injections[index];
 
     index += 1;
   }
 
-  const chunk = templateArray[index];
-  integrals.push(chunk);
+  template += templateArray[index];
 
-  return integrals.join("");
+  return template;
 };
 
 const style: StyleTemplate = (templateArray, ...injections) => {

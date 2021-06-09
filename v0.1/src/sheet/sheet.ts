@@ -4,10 +4,10 @@
 import type {
   AppendStyle,
   ConstructStyleSheet,
+  CreateCSSStyleSheet,
+  CreateStylesAsText,
   GetRecord,
   GetStub,
-  GetCSSStyleSheet,
-  GetStylesAsText,
   StyleRecord,
 } from "../type_flyweight/sheet.ts";
 
@@ -33,7 +33,7 @@ const constructStyleSheet: ConstructStyleSheet = () => {
   return sheet;
 };
 
-const getCSSStyleSheet: GetCSSStyleSheet = (names) => {
+const createCSSStyleSheet: CreateCSSStyleSheet = (names) => {
   const sheet = constructStyleSheet();
   if (sheet === undefined) {
     return;
@@ -49,7 +49,7 @@ const getCSSStyleSheet: GetCSSStyleSheet = (names) => {
   return sheet;
 };
 
-const getStylesAsText: GetStylesAsText = (names) => {
+const createStylesAsText: CreateStylesAsText = (names) => {
   let styles = "";
   for (const name of names) {
     const rule = styleRecord[name];
@@ -71,8 +71,8 @@ const appendStyle: AppendStyle = (id, style) => {
 
 export {
   appendStyle,
+  createCSSStyleSheet,
+  createStylesAsText,
   getStub,
   getStyleRecord,
-  getCSSStyleSheet,
-  getStylesAsText,
 };
