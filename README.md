@@ -278,4 +278,4 @@ This will create a CSS declaration like the example below:
 
 ## License
 
-BSD 2-Clause “Simplified” License
+Apache-2.0
