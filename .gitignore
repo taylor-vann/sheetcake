@@ -2,3 +2,7 @@
 *DS_STORE
 .DS_Store
 ._.DS_Store
+
+## NPM
+node_modules/
+package-lock.json

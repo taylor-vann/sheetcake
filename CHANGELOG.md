@@ -9,6 +9,13 @@ Sheetcake repects [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 Minor patches are placed in their own directories. Patches are bucketed into the
 directory of their minor version.
 
+
+## [0.1.6] - 2021-06-12
+
+### Added
+
+- `nodejs/` nodejs build reincorporated into sheetcake build
+
 ## [0.1.4] - 2021-06-07
 
 ### Removed
