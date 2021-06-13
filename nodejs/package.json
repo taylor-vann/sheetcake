@@ -1,0 +1,23 @@
+{
+  "author": "brian taylor vann",
+  "name": "sheetcake",
+  "version": "0.1.4",
+  "description": "CSS in JS / TS",
+  "main": "./esmodules/sheetcake.js",
+  "type": "module",
+  "license": "Apache-2.0",
+  "homepage": "https://github.com/taylor-vann/sheetcake#readme",
+  "bugs": {
+    "url": "https://github.com/taylor-vann/sheetcake-nodejs/issues"
+  },
+  "keywords": [
+    "css",
+    "styles",
+    "stylesheet",
+    "typescript"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/taylor-vann/sheetcake-nodejs.git"
+  }
+}
